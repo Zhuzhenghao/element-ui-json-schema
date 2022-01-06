@@ -54,7 +54,7 @@ function convertRule(validate) {
 
 function init(uiSchema) {
   let formModel = {};
-  uiSchema.map((param) => {
+  uiSchema.map(param => {
     switch (param.uiType) {
       case "KV":
       case "Structs": {
@@ -99,7 +99,7 @@ export default {
   },
 
   render() {
-    const items = this.uiSchema.map((param) => {
+    const items = this.uiSchema.map(param => {
       if (param.disable) {
         return;
       }
@@ -112,7 +112,7 @@ export default {
         },
       };
 
-      const getGroup = (children) => {
+      const getGroup = children => {
         Reflect.deleteProperty(itemProps.props, "label");
         return (
           <group
@@ -164,7 +164,7 @@ export default {
           return (
             <el-form-item {...itemProps}>
               <el-select v-model={this.formModel[param.jsonKey]}>
-                {param.validate.options.map((op) => {
+                {param.validate.options.map(op => {
                   return (
                     <el-option
                       key={op.value}
