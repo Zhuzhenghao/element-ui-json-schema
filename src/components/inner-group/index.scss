@@ -1,0 +1,13 @@
+.group-inner-container {
+  padding: 5px;
+  border-radius: 5px;
+  .ui-schema-container {
+    display: flex;
+    .next-select {
+      width: 100%;
+    }
+    .next-input {
+      width: 100%;
+    }
+  }
+}
