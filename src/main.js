@@ -11,5 +11,5 @@ Vue.use(ElementUI);
 Vue.component("uiSchema", UiSchema);
 
 new Vue({
-  render: (h) => h(App),
+  render: h => h(App),
 }).$mount("#app");
