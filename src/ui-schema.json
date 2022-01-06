@@ -1,0 +1,82 @@
+{
+  "uiSchema": [
+    {
+      "sort": 1,
+      "label": "Image",
+      "description": "Which image would you like to use for your service",
+      "validate": {
+        "required": true
+      },
+      "jsonKey": "image",
+      "uiType": "ImageInput"
+    },
+    {
+      "sort": 3,
+      "label": "Memory Request\u0026Limit",
+      "description": "Specifies the attributes of the memory resource required for the container.",
+      "validate": {},
+      "jsonKey": "memory",
+      "uiType": "MemoryNumber"
+    },
+    {
+      "sort": 5,
+      "label": "CPU Request\u0026Limit",
+      "description": "Number of CPU units for the service, like `0.5` (0.5 CPU core), `1` (1 CPU core)",
+      "validate": {},
+      "jsonKey": "cpu",
+      "uiType": "CPUNumber"
+    },
+    {
+      "sort": 7,
+      "label": "Image Pull Policy",
+      "description": "Specify image pull policy for your service",
+      "validate": {
+        "options": [
+          {
+            "label": "IfNotPresent",
+            "value": "IfNotPresent"
+          },
+          {
+            "label": "Always",
+            "value": "Always"
+          },
+          {
+            "label": "Never",
+            "value": "Never"
+          }
+        ]
+      },
+      "jsonKey": "imagePullPolicy",
+      "uiType": "Select"
+    },
+    {
+      "sort": 8,
+      "label": "ExposeType",
+      "description": "Specify what kind of Service you want. options: \"ClusterIP\", \"NodePort\", \"LoadBalancer\", \"ExternalName\"",
+      "validate": {
+        "required": true,
+        "options": [
+          {
+            "label": "ClusterIP",
+            "value": "ClusterIP"
+          },
+          {
+            "label": "NodePort",
+            "value": "NodePort"
+          },
+          {
+            "label": "LoadBalancer",
+            "value": "LoadBalancer"
+          },
+          {
+            "label": "ExternalName",
+            "value": "ExternalName"
+          }
+        ],
+        "defaultValue": "ClusterIP"
+      },
+      "jsonKey": "exposeType",
+      "uiType": "Select"
+    }
+  ]
+}
