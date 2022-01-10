@@ -42,7 +42,7 @@ export default {
       const key = Date.now().toString();
       this.structList.push({
         key,
-        option: option.keys,
+        option: option?.keys,
         value: value,
       });
     },
@@ -72,33 +72,34 @@ export default {
           ))}
         </div>
         <div class="struct-plan-option">
-          {/* <If condition={parameterGroupOption.length === 0}>
-            <Button
+          <If condition={parameterGroupOption.length === 0}>
+            <el-button
               onClick={() => {
                 this.addStructPlanItem();
               }}
-              type="secondary"
+              type="primary"
             >
               Add
-            </Button>
-          </If> */}
-
-          <el-dropdown
-            on-command={item => {
-              this.addStructPlanItem(item);
-            }}
-          >
-            <el-button type="primary">
-              ADD <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
-            <el-dropdown-menu slot="dropdown">
-              {parameterGroupOption.map(item => (
-                <el-dropdown-item command={item}>
-                  {item.label || item.keys.join(":")}
-                </el-dropdown-item>
-              ))}
-            </el-dropdown-menu>
-          </el-dropdown>
+          </If>
+          <If condition={parameterGroupOption.length !== 0}>
+            <el-dropdown
+              on-command={item => {
+                this.addStructPlanItem(item);
+              }}
+            >
+              <el-button type="primary">
+                ADD <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                {parameterGroupOption.map(item => (
+                  <el-dropdown-item command={item}>
+                    {item.label || item.keys.join(":")}
+                  </el-dropdown-item>
+                ))}
+              </el-dropdown-menu>
+            </el-dropdown>
+          </If>
         </div>
       </div>
     );
