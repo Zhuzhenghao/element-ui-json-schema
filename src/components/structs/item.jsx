@@ -38,7 +38,7 @@ export default {
           pre[next.jsonKey] = next;
           return pre;
         }, {});
-      uiSchemas = option.map((key) => paramMap[key]);
+      uiSchemas = option.map(key => paramMap[key]);
     }
     console.log(uiSchemas);
 
