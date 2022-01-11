@@ -3,6 +3,7 @@ import group from "../group/group.jsx";
 import kV from "../KV/index.jsx";
 import structs from "../structs/index.jsx";
 import innerGroup from "../inner-group/index.jsx";
+import Strings from "../Strings/index.jsx";
 
 import { checkImageName } from "../../constant/index.js";
 
@@ -57,6 +58,7 @@ function init(uiSchema) {
   uiSchema.map(param => {
     switch (param.uiType) {
       case "KV":
+      case "Strings":
       case "Structs": {
         formModel[param.jsonKey] = [];
       }
@@ -88,6 +90,7 @@ export default {
     kV,
     structs,
     innerGroup,
+    Strings,
   },
 
   data() {
@@ -142,7 +145,31 @@ export default {
         case "Input": {
           return (
             <el-form-item {...itemProps}>
-              <el-input v-model={this.formModel[param.jsonKey]}></el-input>
+              <el-input
+                v-model={this.formModel[param.jsonKey]}
+                key={param.jsonKey}
+              ></el-input>
+            </el-form-item>
+          );
+        }
+        case "Password": {
+          return (
+            <el-form-item {...itemProps}>
+              <el-input
+                v-model={this.formModel[param.jsonKey]}
+                show-password
+                key={param.jsonKey}
+              ></el-input>
+            </el-form-item>
+          );
+        }
+        case "Number": {
+          return (
+            <el-form-item {...itemProps}>
+              <el-input-number
+                v-model={this.formModel[param.jsonKey]}
+                key={param.jsonKey}
+              ></el-input-number>
             </el-form-item>
           );
         }
@@ -156,6 +183,7 @@ export default {
             <el-form-item {...itemProps}>
               <image-input
                 v-model={this.formModel[param.jsonKey]}
+                key={param.jsonKey}
               ></image-input>
             </el-form-item>
           );
@@ -163,7 +191,10 @@ export default {
         case "Select": {
           return (
             <el-form-item {...itemProps}>
-              <el-select v-model={this.formModel[param.jsonKey]}>
+              <el-select
+                v-model={this.formModel[param.jsonKey]}
+                key={param.jsonKey}
+              >
                 {param.validate.options.map(op => {
                   return (
                     <el-option
@@ -186,6 +217,14 @@ export default {
           );
           return getGroup(children);
         }
+        case "Strings":
+          let children = (
+            <Strings
+              jsonKey={param.jsonKey}
+              v-model={this.formModel[param.jsonKey]}
+            ></Strings>
+          )
+          return getGroup(children);
         case "SecretSelect":
           <el-form-item {...itemProps}></el-form-item>;
         case "Group":
