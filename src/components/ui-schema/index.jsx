@@ -4,6 +4,8 @@ import kV from "../KV/index.jsx";
 import structs from "../structs/index.jsx";
 import innerGroup from "../inner-group/index.jsx";
 import Strings from "../Strings/index.jsx";
+import SecretKeySelect from "../SecretKeySelect/index.jsx";
+import SecretSelect from "../SecretSelect/index.jsx";
 
 import { checkImageName } from "../../constant/index.js";
 
@@ -55,12 +57,23 @@ function convertRule(validate) {
 
 function init(uiSchema) {
   let formModel = {};
-  uiSchema.map(param => {
+  uiSchema.map((param) => {
     switch (param.uiType) {
       case "KV":
       case "Strings":
       case "Structs": {
         formModel[param.jsonKey] = [];
+        break;
+      }
+      case "Ignore":
+      case "InnerGroup": {
+        formModel[param.jsonKey] = {};
+        break;
+      }
+      case "SecretSelect":
+      case "SecretKeySelect": {
+        formModel[param.jsonKey] = "";
+        break;
       }
     }
   });
@@ -91,6 +104,8 @@ export default {
     structs,
     innerGroup,
     Strings,
+    SecretKeySelect,
+    SecretSelect,
   },
 
   data() {
@@ -98,11 +113,12 @@ export default {
 
     return {
       formModel,
+      secretKeys: ["jj", "jjh"],
     };
   },
 
   render() {
-    const items = this.uiSchema.map(param => {
+    const items = this.uiSchema.map((param) => {
       if (param.disable) {
         return;
       }
@@ -115,7 +131,7 @@ export default {
         },
       };
 
-      const getGroup = children => {
+      const getGroup = (children) => {
         Reflect.deleteProperty(itemProps.props, "label");
         return (
           <group
@@ -163,6 +179,26 @@ export default {
             </el-form-item>
           );
         }
+        case "Select": {
+          return (
+            <el-form-item {...itemProps}>
+              <el-select
+                v-model={this.formModel[param.jsonKey]}
+                key={param.jsonKey}
+              >
+                {param.validate.options.map((op) => {
+                  return (
+                    <el-option
+                      key={op.value}
+                      label={op.label}
+                      value={op.value}
+                    ></el-option>
+                  );
+                })}
+              </el-select>
+            </el-form-item>
+          );
+        }
         case "Number": {
           return (
             <el-form-item {...itemProps}>
@@ -188,26 +224,6 @@ export default {
             </el-form-item>
           );
         }
-        case "Select": {
-          return (
-            <el-form-item {...itemProps}>
-              <el-select
-                v-model={this.formModel[param.jsonKey]}
-                key={param.jsonKey}
-              >
-                {param.validate.options.map(op => {
-                  return (
-                    <el-option
-                      key={op.value}
-                      label={op.label}
-                      value={op.value}
-                    ></el-option>
-                  );
-                })}
-              </el-select>
-            </el-form-item>
-          );
-        }
         case "KV": {
           let children = (
             <k-v
@@ -223,10 +239,28 @@ export default {
               jsonKey={param.jsonKey}
               v-model={this.formModel[param.jsonKey]}
             ></Strings>
-          )
+          );
           return getGroup(children);
         case "SecretSelect":
-          <el-form-item {...itemProps}></el-form-item>;
+          return (
+            <el-form-item label={param.label}>
+              <secret-select
+                secretKeys={this.secretKeys}
+                key={param.jsonKey}
+                v-model={this.formModel[param.jsonKey]}
+              ></secret-select>
+            </el-form-item>
+          );
+        case "SecretKeySelect":
+          return (
+            <el-form-item label={param.label}>
+              <secret-key-select
+                secretKeys={this.secretKeys}
+                key={param.jsonKey}
+                v-model={this.formModel[param.jsonKey]}
+              ></secret-key-select>
+            </el-form-item>
+          );
         case "Group":
           if (param.subParameters && param.subParameters.length > 0) {
             return (
@@ -236,7 +270,10 @@ export default {
                 title={param.label || ""}
                 jsonKey={param.jsonKey || ""}
               >
-                <ui-schema ui-schema={param.subParameters}></ui-schema>
+                <ui-schema
+                  uiSchema={param.subParameters}
+                  v-model={this.formModel[param.jsonKey]}
+                ></ui-schema>
               </group>
             );
           }
@@ -247,6 +284,7 @@ export default {
               <structs
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
+                jsonKey={param.jsonKey}
                 param={param.subParameters}
                 parameterGroupOption={param.subParameterGroupOption}
               ></structs>
@@ -254,15 +292,20 @@ export default {
           }
           return <div />;
         case "InnerGroup":
-          return <inner-group uiSchema={param.subParameters}></inner-group>;
+          return (
+            <inner-group
+              uiSchema={param.subParameters}
+              v-model={this.formModel[param.jsonKey]}
+              jsonKey={param.jsonKey}
+            ></inner-group>
+          );
         case "Ignore":
           if (param.subParameters && param.subParameters.length > 0) {
             return (
               <ui-schema
                 uiSchema={param.subParameters}
-                // registerForm={(form: Field) => {
-                //   this.onRegisterForm(param.jsonKey, form);
-                // }}
+                v-model={this.formModel[param.jsonKey]}
+                key={param.jsonKey}
                 inline
               ></ui-schema>
             );

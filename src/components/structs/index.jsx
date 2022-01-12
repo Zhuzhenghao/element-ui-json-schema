@@ -14,6 +14,9 @@ export default {
     value: {
       type: Array,
     },
+    jsonKey: {
+      type: String,
+    },
   },
 
   components: {
@@ -43,8 +46,9 @@ export default {
       this.structList.push({
         key,
         option: option?.keys,
-        value: value,
+        value: value || [],
       });
+      this.formModel.push({});
     },
 
     removeStructPlanItem(key) {
@@ -84,7 +88,7 @@ export default {
           </If>
           <If condition={parameterGroupOption.length !== 0}>
             <el-dropdown
-              on-command={item => {
+              on-command={(item) => {
                 this.addStructPlanItem(item);
               }}
             >
@@ -92,7 +96,7 @@ export default {
                 ADD <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                {parameterGroupOption.map(item => (
+                {parameterGroupOption.map((item) => (
                   <el-dropdown-item command={item}>
                     {item.label || item.keys.join(":")}
                   </el-dropdown-item>
