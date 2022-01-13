@@ -41,6 +41,34 @@ export default {
   },
 
   methods: {
+    initValue() {
+      const { parameterGroupOption = [], param = [], formModel } = this;
+      if (formModel) {
+        const keyMap = new Map();
+        if (parameterGroupOption) {
+          parameterGroupOption.map(item => {
+            if (item && item.keys) {
+              keyMap.set(item.keys.sort().join(), item);
+            }
+          });
+        }
+        const structList = [];
+        formModel.map((item, index) => {
+          const key = Date.now().toString() + index;
+          const valueKeys = [];
+          for (const itemkey in item) {
+            valueKeys.push(itemkey);
+          }
+          const option = keyMap.get(valueKeys.sort().join());
+          structList.push({
+            key,
+            option: option?.keys,
+            value: formModel,
+          });
+        });
+        this.structList = structList;
+      }
+    },
     addStructPlanItem(option, value) {
       const key = Date.now().toString();
       this.structList.push({
@@ -58,6 +86,9 @@ export default {
       });
       this.formModel.splice(index, 1);
     },
+  },
+  created() {
+    this.initValue();
   },
 
   render() {

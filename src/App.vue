@@ -21,6 +21,30 @@ export default {
       data: {},
     };
   },
+  created() {
+    this.data = {
+      image: 'nginx:last',
+      memory: '',
+      cpu: '',
+      imagePullPolicy: '',
+      exposeType: 'ClusterIP',
+      cmd: ['npm', 'hhhh'],
+      env: [
+        { name: '12', valueFrom: {} },
+        { name: '2', value: '3' },
+      ],
+      ports: [],
+      volumeMounts: {},
+      readinessProbe: {},
+      livenessProbe: {},
+      annotations: [],
+      imagePullSecrets: [],
+      port: '',
+      volumes: [],
+      labels: [],
+      addRevisionLabel: true,
+    };
+  },
 };
 </script>
 
