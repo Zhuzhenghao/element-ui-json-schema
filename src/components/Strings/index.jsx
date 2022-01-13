@@ -38,26 +38,16 @@ export default {
     const { items } = this;
     return (
       <div class="string-plan-container">
-        <div class="string-plan-option">
-          <el-button
-            onClick={() => {
-              this.addItem();
-            }}
-            type="primary"
-          >
-            Add
-          </el-button>
-        </div>
         {items.map((item, index) => {
           return (
             <el-row key={item.key}>
-              <el-col span={20}>
+              <el-col span={22}>
                 <el-form-item prop={`${this.jsonKey}.${index}`}>
                   <el-input v-model={items[index]}></el-input>
                 </el-form-item>
               </el-col>
-              <el-col span={1}>
-                <div class="mt-5" style={{ padding: "8px 0" }}>
+              <el-col span={2}>
+                <div class="mt-5" style={{ padding: "8px 0 8px 12px" }}>
                   <i
                     class="el-icon-delete"
                     onClick={() => this.remove(index)}
@@ -67,6 +57,17 @@ export default {
             </el-row>
           );
         })}
+        <div class="string-plan-option">
+          <el-button
+            onClick={() => {
+              this.addItem();
+            }}
+            type="primary"
+            plain
+          >
+            Add
+          </el-button>
+        </div>
       </div>
     );
   },

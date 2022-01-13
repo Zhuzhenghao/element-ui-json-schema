@@ -53,25 +53,20 @@ export default {
 
     return (
       <div>
-        <div>
-          <el-button icon="el-icon-plus" onClick={this.addItem}>
-            Add
-          </el-button>
-        </div>
         {items.map((item, index) => {
           return (
             <el-row key={item.key} gutter={20}>
-              <el-col span={10}>
+              <el-col span={11}>
                 <el-form-item prop={`${this.jsonKey}.${index}.label`}>
                   <el-input v-model={item.label}></el-input>
                 </el-form-item>
               </el-col>
-              <el-col span={10}>
+              <el-col span={11}>
                 <el-form-item prop={`${this.jsonKey}.${index}.value`}>
                   <el-input v-model={item.value}></el-input>
                 </el-form-item>
               </el-col>
-              <el-col span={1}>
+              <el-col span={2}>
                 <div class="mt-5" style={{ padding: "8px 0" }}>
                   <i
                     class="el-icon-delete"
@@ -82,6 +77,11 @@ export default {
             </el-row>
           );
         })}
+        <div class="add-btn">
+          <el-button onClick={this.addItem} type="primary" plain>
+            Add
+          </el-button>
+        </div>
       </div>
     );
   },

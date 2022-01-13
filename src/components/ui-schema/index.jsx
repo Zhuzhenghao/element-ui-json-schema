@@ -60,7 +60,7 @@ function convertRule(validate) {
 
 function init(uiSchema) {
   let formModel = {};
-  uiSchema.map((param) => {
+  uiSchema.map(param => {
     switch (param.uiType) {
       case "KV":
       case "Strings":
@@ -120,12 +120,12 @@ export default {
 
     return {
       formModel,
-      secretKeys: ["jj", "jjh"],
+      secretKeys: [],
     };
   },
 
   render() {
-    const items = this.uiSchema.map((param) => {
+    const items = this.uiSchema.map(param => {
       if (param.disable) {
         return;
       }
@@ -138,7 +138,7 @@ export default {
         },
       };
 
-      const getGroup = (children) => {
+      const getGroup = children => {
         Reflect.deleteProperty(itemProps.props, "label");
         return (
           <group
@@ -165,7 +165,6 @@ export default {
                 v-model={this.formModel[param.jsonKey]}
                 style="display:inline-block"
               ></el-switch>
-              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         }
@@ -187,7 +186,6 @@ export default {
                 show-password
                 key={param.jsonKey}
               ></el-input>
-              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         }
@@ -198,7 +196,7 @@ export default {
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
               >
-                {param.validate.options.map((op) => {
+                {param.validate.options.map(op => {
                   return (
                     <el-option
                       key={op.value}
@@ -219,7 +217,6 @@ export default {
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
               ></el-input>
-              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         }
@@ -234,9 +231,7 @@ export default {
               <image-input
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
-                description={param.description}
               ></image-input>
-              <div class="title-desc">{this.description}</div>
             </el-form-item>
           );
         }
@@ -267,7 +262,6 @@ export default {
                 key={param.jsonKey}
                 v-model={this.formModel[param.jsonKey]}
               ></secret-select>
-              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         case "SecretKeySelect":
@@ -278,24 +272,18 @@ export default {
                 key={param.jsonKey}
                 v-model={this.formModel[param.jsonKey]}
               ></secret-key-select>
-              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         case "CPUNumber":
           return (
             <el-form-item label={param.label}>
-              <CPU-number
-                description={param.description}
-                v-model={this.formModel[param.jsonKey]}
-              ></CPU-number>
-              <div class="title-desc">{param.description}</div>
+              <CPU-number v-model={this.formModel[param.jsonKey]}></CPU-number>
             </el-form-item>
           );
         case "MemoryNumber":
           return (
             <el-form-item label={param.label}>
               <memory-number
-                description={param.description}
                 v-model={this.formModel[param.jsonKey]}
               ></memory-number>
             </el-form-item>

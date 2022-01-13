@@ -19,3 +19,13 @@
   line-height: 18px;
   margin-top: 4px;
 }
+.el-icon-delete {
+  cursor: pointer;
+  &::before {
+    color: #333;
+    font-size: 18px !important;
+  }
+}
+.add-btn {
+  text-align: right;
+}

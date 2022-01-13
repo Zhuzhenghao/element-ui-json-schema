@@ -345,5 +345,15 @@ a {
 }
 
 .el-button {
-  padding: 0 16px !important;
+  padding: 5px 8px;
+  letter-spacing: 1.25px;
+  line-height: 14px;
+  background-color: transparent !important;
+  color: var(--btn-ghost-light-color, #0064c8) !important;
+  border-color: var(--btn-ghost-light-border-color, #0064c8) !important;
+  &:hover {
+    background-color: #fff !important;
+    color: var(--btn-ghost-light-color, #0064c8) !important;
+    border-color: var(--btn-ghost-light-border-color, #0064c8) !important;
+  }
 }

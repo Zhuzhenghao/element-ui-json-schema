@@ -28,7 +28,7 @@ export default {
     const { secretKeys } = this;
     return (
       <el-select v-model={this.formModel}>
-        {secretKeys.map((op) => {
+        {secretKeys.map(op => {
           return <el-option key={op} label={op} value={op}></el-option>;
         })}
       </el-select>

@@ -5,7 +5,6 @@ export default {
     value: {
       type: String,
     },
-    description: { type: String },
   },
 
   computed: {

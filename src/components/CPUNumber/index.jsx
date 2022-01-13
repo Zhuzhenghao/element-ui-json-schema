@@ -2,7 +2,6 @@ export default {
   name: "CPUNumber",
   props: {
     value: { type: String },
-    description: { type: String },
   },
   computed: {
     formModel: {

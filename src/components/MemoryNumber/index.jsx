@@ -2,7 +2,6 @@ export default {
   name: "MemoryNumber",
   props: {
     value: { type: String },
-    description: { type: String },
   },
   computed: {
     formModel: {

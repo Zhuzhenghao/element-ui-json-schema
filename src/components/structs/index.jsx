@@ -82,6 +82,7 @@ export default {
                 this.addStructPlanItem();
               }}
               type="primary"
+              plain
             >
               Add
             </el-button>
@@ -92,8 +93,8 @@ export default {
                 this.addStructPlanItem(item);
               }}
             >
-              <el-button type="primary">
-                ADD <i class="el-icon-arrow-down el-icon--right"></i>
+              <el-button type="primary" plain>
+                Add <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
                 {parameterGroupOption.map(item => (
