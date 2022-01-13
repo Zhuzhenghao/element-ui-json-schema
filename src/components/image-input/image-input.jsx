@@ -26,7 +26,6 @@ export default {
           v-model={this.image}
           placeholder="please enter image"
         ></el-input>
-        <div class="title-desc">{this.description}</div>
       </div>
     );
   },

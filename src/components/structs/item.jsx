@@ -52,12 +52,12 @@ export default {
         </div>
 
         <div class="remove-option-container">
-          <el-button
+          <i
             on-click={() => {
               this.$emit("delete");
             }}
-            icon={"el-icon-remove"}
-          ></el-button>
+            class="el-icon-delete"
+          ></i>
         </div>
       </div>
     );

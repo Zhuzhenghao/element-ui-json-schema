@@ -59,7 +59,7 @@ export default {
               <el-col span={1}>
                 <div class="mt-5" style={{ padding: "8px 0" }}>
                   <i
-                    class="el-icon-minus"
+                    class="el-icon-delete"
                     onClick={() => this.remove(index)}
                   />
                 </div>

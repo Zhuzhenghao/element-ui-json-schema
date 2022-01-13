@@ -25,7 +25,6 @@ export default {
         <el-input type="number" v-model={this.formModel} min={0}>
           <template slot="append">MB</template>
         </el-input>
-        <div class="title-desc">{this.description}</div>
       </div>
     );
   },

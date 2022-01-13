@@ -10,39 +10,35 @@
       .struct-item-content {
         width: 100%;
       }
-      .struct-item-content > .next-form {
+      .struct-item-content > .el-form {
         display: flex !important;
         flex: 1 1 auto;
         align-items: center;
-        .next-form-item {
-          display: flex;
+        .el-form-item {
           margin-right: 12px;
           margin-bottom: 0;
-          .next-form-item-help {
-            display: none;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
+          display: flex;
           &:last-child {
             margin-right: 0;
           }
-          .next-form-item-label {
-            flex: 0 0 55px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+          .el-form-item__label {
+            margin-right: 10px;
           }
+        }
+        .el-form-item,
+        .el-form-item__content {
+          flex-grow: 1;
         }
       }
 
       .remove-option-container {
         flex: 0 0 36px;
         text-align: center;
-        .next-icon-ashbin {
+        .el-icon-delete {
           cursor: pointer;
           &::before {
             color: #333;
-            font-size: 14px !important;
+            font-size: 18px !important;
           }
         }
       }
@@ -51,8 +47,5 @@
 
   .struct-plan-option {
     text-align: right;
-    .next-btn {
-      border-radius: 20px;
-    }
   }
 }

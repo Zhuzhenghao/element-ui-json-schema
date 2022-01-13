@@ -7,7 +7,7 @@ import Strings from "../Strings/index.jsx";
 import SecretKeySelect from "../SecretKeySelect/index.jsx";
 import SecretSelect from "../SecretSelect/index.jsx";
 import MemoryNumber from "../MemoryNumber/index.jsx";
-import CPUNumber from '../CPUNumber/index.jsx';
+import CPUNumber from "../CPUNumber/index.jsx";
 import "./index.scss";
 
 import { checkImageName } from "../../constant/index.js";
@@ -60,7 +60,7 @@ function convertRule(validate) {
 
 function init(uiSchema) {
   let formModel = {};
-  uiSchema.map(param => {
+  uiSchema.map((param) => {
     switch (param.uiType) {
       case "KV":
       case "Strings":
@@ -125,7 +125,7 @@ export default {
   },
 
   render() {
-    const items = this.uiSchema.map(param => {
+    const items = this.uiSchema.map((param) => {
       if (param.disable) {
         return;
       }
@@ -138,7 +138,7 @@ export default {
         },
       };
 
-      const getGroup = children => {
+      const getGroup = (children) => {
         Reflect.deleteProperty(itemProps.props, "label");
         return (
           <group
@@ -161,7 +161,11 @@ export default {
         case "Switch": {
           return (
             <el-form-item {...itemProps}>
-              <el-switch v-model={this.formModel[param.jsonKey]}></el-switch>
+              <el-switch
+                v-model={this.formModel[param.jsonKey]}
+                style="display:inline-block"
+              ></el-switch>
+              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         }
@@ -183,6 +187,7 @@ export default {
                 show-password
                 key={param.jsonKey}
               ></el-input>
+              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         }
@@ -193,7 +198,7 @@ export default {
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
               >
-                {param.validate.options.map(op => {
+                {param.validate.options.map((op) => {
                   return (
                     <el-option
                       key={op.value}
@@ -209,10 +214,12 @@ export default {
         case "Number": {
           return (
             <el-form-item {...itemProps}>
-              <el-input-number
+              <el-input
+                type="number"
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
-              ></el-input-number>
+              ></el-input>
+              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         }
@@ -229,6 +236,7 @@ export default {
                 key={param.jsonKey}
                 description={param.description}
               ></image-input>
+              <div class="title-desc">{this.description}</div>
             </el-form-item>
           );
         }
@@ -243,10 +251,12 @@ export default {
         }
         case "Strings":
           let children = (
-            <Strings
-              jsonKey={param.jsonKey}
-              v-model={this.formModel[param.jsonKey]}
-            ></Strings>
+            <div>
+              <Strings
+                jsonKey={param.jsonKey}
+                v-model={this.formModel[param.jsonKey]}
+              ></Strings>
+            </div>
           );
           return getGroup(children);
         case "SecretSelect":
@@ -257,6 +267,7 @@ export default {
                 key={param.jsonKey}
                 v-model={this.formModel[param.jsonKey]}
               ></secret-select>
+              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         case "SecretKeySelect":
@@ -267,6 +278,7 @@ export default {
                 key={param.jsonKey}
                 v-model={this.formModel[param.jsonKey]}
               ></secret-key-select>
+              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         case "CPUNumber":
@@ -276,6 +288,7 @@ export default {
                 description={param.description}
                 v-model={this.formModel[param.jsonKey]}
               ></CPU-number>
+              <div class="title-desc">{param.description}</div>
             </el-form-item>
           );
         case "MemoryNumber":
@@ -350,7 +363,12 @@ export default {
     };
 
     return (
-      <el-form size="medium" {...formProps} class="ui-schema-container">
+      <el-form
+        show-message={false}
+        size="medium"
+        {...formProps}
+        class="ui-schema-container"
+      >
         {items}
       </el-form>
     );

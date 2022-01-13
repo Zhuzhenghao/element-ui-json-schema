@@ -855,7 +855,7 @@
               "validate": {},
               "jsonKey": "configMapKeyRef",
               "uiType": "Group",
-              "disable": false,
+              "disable": true,
               "subParameters": [
                 {
                   "sort": 100,
