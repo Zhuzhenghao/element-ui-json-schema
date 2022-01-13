@@ -735,7 +735,8 @@
       "label": "Image",
       "description": "Which image would you like to use for your service",
       "validate": {
-        "required": true
+        "required": true,
+        "defaultValue": "nginx:last"
       },
       "jsonKey": "image",
       "uiType": "ImageInput"
@@ -1808,7 +1809,7 @@
       "description": "If addRevisionLabel is true, the appRevision label will be added to the underlying pods",
       "validate": {
         "required": true,
-        "defaultValue": false
+        "defaultValue": true
       },
       "jsonKey": "addRevisionLabel",
       "uiType": "Switch",

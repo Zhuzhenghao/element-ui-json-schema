@@ -58,26 +58,35 @@ function convertRule(validate) {
   return rules;
 }
 
-function init(uiSchema) {
+function init(uiSchema, value) {
   let formModel = {};
   uiSchema.map(param => {
+    const initValue =
+      param.validate.defaultValue || (value && value[param.jsonKey]);
     switch (param.uiType) {
       case "KV":
+      case "Group":
       case "Strings":
       case "Structs": {
-        formModel[param.jsonKey] = [];
+        formModel[param.jsonKey] = initValue ? initValue : [];
         break;
       }
       case "Ignore":
       case "InnerGroup": {
-        formModel[param.jsonKey] = {};
+        formModel[param.jsonKey] = initValue ? initValue : {};
         break;
       }
+      case "Input":
+      case "Password":
+      case "Switch":
+      case "ImageInput":
+      case "Number":
       case "CPUNumber":
       case "MemoryNumber":
+      case "Select":
       case "SecretSelect":
       case "SecretKeySelect": {
-        formModel[param.jsonKey] = "";
+        formModel[param.jsonKey] = initValue ? initValue : "";
         break;
       }
     }
@@ -116,7 +125,7 @@ export default {
   },
 
   data() {
-    let formModel = init(this.uiSchema);
+    let formModel = init(this.uiSchema, this.value);
 
     return {
       formModel,
@@ -152,10 +161,6 @@ export default {
           </group>
         );
       };
-
-      const initValue =
-        param.validate.defaultValue ||
-        (this.value && this.value[param.jsonKey]);
 
       switch (param.uiType) {
         case "Switch": {
@@ -365,6 +370,7 @@ export default {
   // TODO change this watch
   watch: {
     formModel: {
+      immediate: true,
       deep: true,
       handler() {
         this.$emit("input", this.formModel);
