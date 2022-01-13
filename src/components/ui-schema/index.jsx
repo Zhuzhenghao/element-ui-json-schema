@@ -60,17 +60,17 @@ function convertRule(validate) {
 
 function init(uiSchema, value) {
   let formModel = {};
-  uiSchema.map(param => {
+  uiSchema.map((param) => {
     const initValue =
       param.validate.defaultValue || (value && value[param.jsonKey]);
     switch (param.uiType) {
       case "KV":
-      case "Group":
       case "Strings":
       case "Structs": {
         formModel[param.jsonKey] = initValue ? initValue : [];
         break;
       }
+      case "Group":
       case "Ignore":
       case "InnerGroup": {
         formModel[param.jsonKey] = initValue ? initValue : {};
@@ -78,7 +78,6 @@ function init(uiSchema, value) {
       }
       case "Input":
       case "Password":
-      case "Switch":
       case "ImageInput":
       case "Number":
       case "CPUNumber":
@@ -87,6 +86,10 @@ function init(uiSchema, value) {
       case "SecretSelect":
       case "SecretKeySelect": {
         formModel[param.jsonKey] = initValue ? initValue : "";
+        break;
+      }
+      case "Switch": {
+        formModel[param.jsonKey] = initValue ? initValue : false;
         break;
       }
     }
@@ -134,7 +137,7 @@ export default {
   },
 
   render() {
-    const items = this.uiSchema.map(param => {
+    const items = this.uiSchema.map((param) => {
       if (param.disable) {
         return;
       }
@@ -147,7 +150,7 @@ export default {
         },
       };
 
-      const getGroup = children => {
+      const getGroup = (children) => {
         Reflect.deleteProperty(itemProps.props, "label");
         return (
           <group
@@ -201,7 +204,7 @@ export default {
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
               >
-                {param.validate.options.map(op => {
+                {param.validate.options.map((op) => {
                   return (
                     <el-option
                       key={op.value}
@@ -370,7 +373,6 @@ export default {
   // TODO change this watch
   watch: {
     formModel: {
-      immediate: true,
       deep: true,
       handler() {
         this.$emit("input", this.formModel);

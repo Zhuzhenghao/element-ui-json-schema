@@ -720,12 +720,20 @@
         },
         "title": "volumes",
         "type": "array"
+      },
+      "objects": {
+        "items": {
+          "type": "object"
+        },
+        "title": "objects",
+        "type": "array"
       }
     },
     "required": [
       "addRevisionLabel",
       "image",
-      "exposeType"
+      "exposeType",
+      "objects"
     ],
     "type": "object"
   },
@@ -1134,7 +1142,7 @@
           "validate": {},
           "jsonKey": "secret",
           "uiType": "Structs",
-          "disable": false,
+          "disable": true,
           "subParameters": [
             {
               "sort": 100,
@@ -1227,7 +1235,7 @@
           "validate": {},
           "jsonKey": "configMap",
           "uiType": "Structs",
-          "disable": false,
+          "disable": true,
           "subParameters": [
             {
               "sort": 100,
@@ -1814,6 +1822,16 @@
       "jsonKey": "addRevisionLabel",
       "uiType": "Switch",
       "disable": false
+    },
+    {
+      "sort": 100,
+      "label": "Objects",
+      "description": "",
+      "validate": {
+        "required": true
+      },
+      "jsonKey": "objects",
+      "uiType": "K8sObjectsCode"
     }
   ]
 }
