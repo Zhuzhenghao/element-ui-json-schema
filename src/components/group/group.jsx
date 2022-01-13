@@ -33,15 +33,20 @@ export default {
               {this.title}
               <div class="group-title-desc">{this.description}</div>
             </el-col>
-            <el-col span={3}>
+            <el-col span={3} class="flexcenter">
               <el-switch v-model={this.opened}></el-switch>
-              <i
-                class={this.opened ? "el-icon-arrow-up" : "el-icon-arrow-down"}
-              ></i>
+              <If condition={this.opened}>
+                <i class="el-icon-arrow-up icon"></i>
+              </If>
             </el-col>
           </el-row>
         </div>
-        {this.opened ? this.$slots.default : null}
+        <If condition={this.opened}>
+          <div class="group-box">{this.$slots.default}</div>
+        </If>
+        <If condition={!this.opened}>
+          <div class="group-box disable" />
+        </If>
       </div>
     );
   },

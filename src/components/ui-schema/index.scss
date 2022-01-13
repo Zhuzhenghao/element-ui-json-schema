@@ -1,0 +1,21 @@
+.ui-schema-container,
+.group-container {
+  .el-form-item {
+    .el-form-item__label {
+      color: #333;
+      font-weight: bold;
+      padding: 0;
+    }
+  }
+  .el-input-group > .el-input.large {
+    border-left: 1px solid #c0c6cc !important;
+  }
+}
+.title-desc {
+  color: #a6a6a6;
+  font-weight: normal;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  line-height: 18px;
+  margin-top: 4px;
+}

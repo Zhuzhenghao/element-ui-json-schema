@@ -5,7 +5,7 @@
   border-radius: 4px;
   visibility: visible;
   &:hover {
-    border: 1px solid lightblue;
+    border: 1px solid #0064c8;
   }
   .group-title-container {
     position: relative;
@@ -25,10 +25,13 @@
       position: absolute;
       right: 10px;
     }
-    .next-icon-arrow-up {
+    .el-icon-arrow-up {
       &::before {
         font-size: 12px !important;
       }
+    }
+    .el-row {
+      display: flex;
     }
   }
   .group-box {

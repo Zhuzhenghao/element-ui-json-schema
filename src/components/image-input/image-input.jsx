@@ -5,6 +5,7 @@ export default {
     value: {
       type: String,
     },
+    description: { type: String },
   },
 
   computed: {
@@ -20,10 +21,13 @@ export default {
 
   render() {
     return (
-      <el-input
-        v-model={this.image}
-        placeholder="please enter image"
-      ></el-input>
+      <div>
+        <el-input
+          v-model={this.image}
+          placeholder="please enter image"
+        ></el-input>
+        <div class="title-desc">{this.description}</div>
+      </div>
     );
   },
 };

@@ -855,7 +855,7 @@
               "validate": {},
               "jsonKey": "configMapKeyRef",
               "uiType": "Group",
-              "disable": true,
+              "disable": false,
               "subParameters": [
                 {
                   "sort": 100,
@@ -1133,7 +1133,7 @@
           "validate": {},
           "jsonKey": "secret",
           "uiType": "Structs",
-          "disable": true,
+          "disable": false,
           "subParameters": [
             {
               "sort": 100,
@@ -1226,7 +1226,7 @@
           "validate": {},
           "jsonKey": "configMap",
           "uiType": "Structs",
-          "disable": true,
+          "disable": false,
           "subParameters": [
             {
               "sort": 100,
@@ -1486,7 +1486,7 @@
           },
           "jsonKey": "hostAliases",
           "uiType": "Structs",
-          "disable": true,
+          "disable": false,
           "subParameters": [
             {
               "sort": 100,
@@ -1613,7 +1613,7 @@
           },
           "jsonKey": "hostAliases",
           "uiType": "Structs",
-          "disable": true,
+          "disable": false,
           "subParameters": [
             {
               "sort": 100,
@@ -1733,7 +1733,7 @@
       "validate": {},
       "jsonKey": "port",
       "uiType": "Number",
-      "disable": true
+      "disable": false
     },
     {
       "sort": 100,
@@ -1742,7 +1742,7 @@
       "validate": {},
       "jsonKey": "volumes",
       "uiType": "Structs",
-      "disable": true,
+      "disable": false,
       "subParameters": [
         {
           "sort": 100,
@@ -1812,7 +1812,7 @@
       },
       "jsonKey": "addRevisionLabel",
       "uiType": "Switch",
-      "disable": true
+      "disable": false
     }
   ]
 }

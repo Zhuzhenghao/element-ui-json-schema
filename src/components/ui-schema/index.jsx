@@ -6,6 +6,9 @@ import innerGroup from "../inner-group/index.jsx";
 import Strings from "../Strings/index.jsx";
 import SecretKeySelect from "../SecretKeySelect/index.jsx";
 import SecretSelect from "../SecretSelect/index.jsx";
+import MemoryNumber from "../MemoryNumber/index.jsx";
+import CPUNumber from '../CPUNumber/index.jsx';
+import "./index.scss";
 
 import { checkImageName } from "../../constant/index.js";
 
@@ -70,6 +73,8 @@ function init(uiSchema) {
         formModel[param.jsonKey] = {};
         break;
       }
+      case "CPUNumber":
+      case "MemoryNumber":
       case "SecretSelect":
       case "SecretKeySelect": {
         formModel[param.jsonKey] = "";
@@ -106,6 +111,8 @@ export default {
     Strings,
     SecretKeySelect,
     SecretSelect,
+    MemoryNumber,
+    CPUNumber,
   },
 
   data() {
@@ -220,6 +227,7 @@ export default {
               <image-input
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
+                description={param.description}
               ></image-input>
             </el-form-item>
           );
@@ -259,6 +267,24 @@ export default {
                 key={param.jsonKey}
                 v-model={this.formModel[param.jsonKey]}
               ></secret-key-select>
+            </el-form-item>
+          );
+        case "CPUNumber":
+          return (
+            <el-form-item label={param.label}>
+              <CPU-number
+                description={param.description}
+                v-model={this.formModel[param.jsonKey]}
+              ></CPU-number>
+            </el-form-item>
+          );
+        case "MemoryNumber":
+          return (
+            <el-form-item label={param.label}>
+              <memory-number
+                description={param.description}
+                v-model={this.formModel[param.jsonKey]}
+              ></memory-number>
             </el-form-item>
           );
         case "Group":
@@ -323,7 +349,11 @@ export default {
       },
     };
 
-    return <el-form {...formProps}>{items}</el-form>;
+    return (
+      <el-form size="medium" {...formProps} class="ui-schema-container">
+        {items}
+      </el-form>
+    );
   },
 
   // TODO change this watch
