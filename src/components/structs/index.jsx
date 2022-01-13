@@ -48,15 +48,15 @@ export default {
         option: option?.keys,
         value: value || [],
       });
-      this.formModel.push({});
     },
 
-    removeStructPlanItem(key) {
+    removeStructPlanItem(key, index) {
       this.structList.forEach((item, i) => {
         if (item.key === key) {
           this.structList.splice(i, 1);
         }
       });
+      this.formModel.splice(index, 1);
     },
   },
 
@@ -71,7 +71,7 @@ export default {
               option={struct.option}
               param={param}
               key={struct.key}
-              on-delete={() => this.removeStructPlanItem(struct.key)}
+              on-delete={() => this.removeStructPlanItem(struct.key, index)}
             ></struct-item>
           ))}
         </div>

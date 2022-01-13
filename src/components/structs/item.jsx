@@ -38,9 +38,8 @@ export default {
           pre[next.jsonKey] = next;
           return pre;
         }, {});
-      uiSchemas = option.map((key) => paramMap[key]);
+      uiSchemas = option.map(key => paramMap[key]);
     }
-    console.log(uiSchemas);
 
     return (
       <div class="struct-item-container">
