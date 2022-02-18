@@ -58,22 +58,20 @@ function convertRule(validate) {
   return rules;
 }
 
-function init(uiSchema, value) {
+function init(uiSchema) {
   let formModel = {};
   uiSchema.map(param => {
-    const initValue =
-      param.validate.defaultValue || (value && value[param.jsonKey]);
     switch (param.uiType) {
       case "KV":
       case "Strings":
       case "Structs": {
-        formModel[param.jsonKey] = initValue ? initValue : [];
+        formModel[param.jsonKey] = [];
         break;
       }
       case "Group":
       case "Ignore":
       case "InnerGroup": {
-        formModel[param.jsonKey] = initValue ? initValue : {};
+        formModel[param.jsonKey] = {};
         break;
       }
       case "Input":
@@ -85,11 +83,11 @@ function init(uiSchema, value) {
       case "Select":
       case "SecretSelect":
       case "SecretKeySelect": {
-        formModel[param.jsonKey] = initValue ? initValue : "";
+        formModel[param.jsonKey] = "";
         break;
       }
       case "Switch": {
-        formModel[param.jsonKey] = initValue ? initValue : false;
+        formModel[param.jsonKey] = false;
         break;
       }
     }
@@ -134,6 +132,16 @@ export default {
       formModel,
       secretKeys: [],
     };
+  },
+
+  methods: {
+    setValues(value) {
+      this.formModel = Object.assign(this.formModel, value);
+    },
+  },
+
+  mounted() {
+    this.setValues(this.value);
   },
 
   render() {

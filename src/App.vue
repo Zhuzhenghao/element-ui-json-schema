@@ -23,10 +23,10 @@ export default {
   },
   created() {
     this.data = {
-      image: 'nginx:last',
-      memory: '',
-      cpu: '',
-      imagePullPolicy: '',
+      image: 'nginx:last111',
+      memory: '5Mi',
+      cpu: '0.1',
+      imagePullPolicy: 'Always',
       exposeType: 'ClusterIP',
       cmd: ['npm', 'hhhh'],
       env: [
@@ -36,10 +36,14 @@ export default {
       ports: [],
       volumeMounts: {},
       readinessProbe: {},
-      livenessProbe: {},
+      livenessProbe: {
+        exec: {
+          command: ['nothing'],
+        },
+      },
       annotations: [],
       imagePullSecrets: [],
-      port: '',
+      port: 8080,
       volumes: [],
       labels: [],
       addRevisionLabel: true,
