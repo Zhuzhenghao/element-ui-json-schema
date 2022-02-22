@@ -60,7 +60,7 @@ function convertRule(validate) {
 
 function init(uiSchema) {
   let formModel = {};
-  uiSchema.map(param => {
+  uiSchema.map((param) => {
     switch (param.uiType) {
       case "KV":
       case "Strings":
@@ -138,6 +138,11 @@ export default {
     setValues(value) {
       this.formModel = Object.assign(this.formModel, value);
     },
+    validate() {
+      this.$refs.schemaForm.validate((valid) => {
+        console.log(valid);
+      });
+    },
   },
 
   mounted() {
@@ -145,7 +150,7 @@ export default {
   },
 
   render() {
-    const items = this.uiSchema.map(param => {
+    const items = this.uiSchema.map((param) => {
       if (param.disable) {
         return;
       }
@@ -158,7 +163,7 @@ export default {
         },
       };
 
-      const getGroup = children => {
+      const getGroup = (children) => {
         Reflect.deleteProperty(itemProps.props, "label");
         return (
           <group
@@ -177,10 +182,7 @@ export default {
         case "Switch": {
           return (
             <el-form-item {...itemProps}>
-              <el-switch
-                v-model={this.formModel[param.jsonKey]}
-                style="display:inline-block"
-              ></el-switch>
+              <el-switch v-model={this.formModel[param.jsonKey]}></el-switch>
             </el-form-item>
           );
         }
@@ -212,7 +214,7 @@ export default {
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
               >
-                {param.validate.options.map(op => {
+                {param.validate.options.map((op) => {
                   return (
                     <el-option
                       key={op.value}
@@ -360,21 +362,25 @@ export default {
     const formProps = {
       props: {
         model: this.formModel,
-        rules: this.rules,
         labelPosition: "top",
         inline: this.inline,
       },
     };
 
     return (
-      <el-form
-        show-message={false}
-        size="medium"
-        {...formProps}
-        class="ui-schema-container"
-      >
-        {items}
-      </el-form>
+      <div>
+        <el-form
+          ref="schemaForm"
+          size="medium"
+          {...formProps}
+          class="ui-schema-container"
+        >
+          {items}
+        </el-form>
+        <el-button type="primary" onclick={this.validate}>
+          提交
+        </el-button>
+      </div>
     );
   },
 
