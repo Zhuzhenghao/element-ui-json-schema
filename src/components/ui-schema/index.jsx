@@ -139,9 +139,7 @@ export default {
       this.formModel = Object.assign(this.formModel, value);
     },
     validate() {
-      this.$refs.schemaForm.validate((valid) => {
-        console.log(valid);
-      });
+      return this.$refs.schemaForm.validate();
     },
   },
 
@@ -368,19 +366,14 @@ export default {
     };
 
     return (
-      <div>
-        <el-form
-          ref="schemaForm"
-          size="medium"
-          {...formProps}
-          class="ui-schema-container"
-        >
-          {items}
-        </el-form>
-        <el-button type="primary" onclick={this.validate}>
-          提交
-        </el-button>
-      </div>
+      <el-form
+        ref="schemaForm"
+        size="medium"
+        {...formProps}
+        class="ui-schema-container"
+      >
+        {items}
+      </el-form>
     );
   },
 

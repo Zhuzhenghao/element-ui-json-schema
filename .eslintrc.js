@@ -3,11 +3,21 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ["plugin:vue/essential"],
+  extends: ["plugin:vue/essential", "@vue/airbnb"],
   globals: {
     _: true,
   },
   rules: {
+    // don't require .vue extension when importing
+    "import/extensions": [
+      // 'error',
+      "always",
+      {
+        js: "never",
+        vue: "never",
+        ts: "never",
+      },
+    ],
     // https://eslint.org/docs/rules/no-unused-expressions
     "no-unused-expressions": [
       "off",
@@ -16,7 +26,7 @@ module.exports = {
     // allow debugger during development
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     // https://eslint.org/docs/rules/arrow-parens
-    "arrow-parens": ["warn", "as-needed"],
+    "arrow-parens": ["warn", "always"],
     // https://eslint.org/docs/rules/arrow-body-style
     "arrow-body-style": ["off", "as-needed"],
     // https://eslint.org/docs/rules/arrow-spacing

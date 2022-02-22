@@ -1,11 +1,18 @@
 <template>
   <div id="app">
     <ui-schema
+      ref="uiSchema"
       :ui-schema="schema.uiSchema"
       v-model="data"
     ></ui-schema>
 
     {{data}}
+    <el-button
+      type="primary"
+      @click="validate"
+    >
+      提交
+    </el-button>
   </div>
 </template>
 
@@ -20,6 +27,18 @@ export default {
       schema,
       data: {},
     };
+  },
+  methods: {
+    validate() {
+      this.$refs.uiSchema
+        .validate()
+        .then((valid) => {
+          console.log(valid);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   created() {
     this.data = {
