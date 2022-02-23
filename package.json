@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
     "lodash": "^4.17.21",

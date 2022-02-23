@@ -10,7 +10,7 @@ import MemoryNumber from "../MemoryNumber/index.jsx";
 import CPUNumber from "../CPUNumber/index.jsx";
 import "./index.scss";
 
-import { checkImageName } from "../../constant/index.js";
+import { checkImageName } from "../../core/constant/index.js";
 
 function convertRule(validate) {
   const rules = [];
@@ -137,6 +137,9 @@ export default {
   methods: {
     setValues(value) {
       this.formModel = Object.assign(this.formModel, value);
+    },
+    setKeys(keys) {
+      this.secretKeys = [...keys];
     },
     validate() {
       return this.$refs.schemaForm.validate();
@@ -274,7 +277,7 @@ export default {
           return (
             <el-form-item label={param.label}>
               <secret-select
-                secretKeys={this.secretKeys}
+                v-on:setKeys={this.setKeys}
                 key={param.jsonKey}
                 v-model={this.formModel[param.jsonKey]}
               ></secret-select>
