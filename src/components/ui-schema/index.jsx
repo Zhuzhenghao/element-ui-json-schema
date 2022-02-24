@@ -261,6 +261,7 @@ export default {
         case "KV": {
           let children = (
             <k-v
+              key={param.jsonKey}
               jsonKey={param.jsonKey}
               v-model={this.formModel[param.jsonKey]}
             ></k-v>
@@ -270,6 +271,7 @@ export default {
         case "HelmValues":
           let HV = (
             <helm-values
+              key={param.jsonKey}
               jsonKey={param.jsonKey}
               v-model={this.formModel[param.jsonKey]}
             ></helm-values>
@@ -279,6 +281,7 @@ export default {
           let strs = (
             <div>
               <Strings
+                key={param.jsonKey}
                 jsonKey={param.jsonKey}
                 v-model={this.formModel[param.jsonKey]}
               ></Strings>
