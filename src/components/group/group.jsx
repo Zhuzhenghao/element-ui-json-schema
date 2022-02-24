@@ -35,9 +35,9 @@ export default {
             </el-col>
             <el-col span={3} class="flexcenter">
               <el-switch v-model={this.opened}></el-switch>
-              <If condition={this.opened}>
+              {/* <If condition={this.opened}>
                 <i class="el-icon-arrow-up icon"></i>
-              </If>
+              </If> */}
             </el-col>
           </el-row>
         </div>

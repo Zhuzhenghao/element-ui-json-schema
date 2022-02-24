@@ -14,26 +14,33 @@ export default {
       type: String,
     },
     value: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => ({}),
     },
   },
 
   data() {
-    return {};
+    return {
+      items: [],
+      form: {},
+    };
   },
-
-  computed: {
+  watch: {
     items: {
-      get() {
-        return this.value;
-      },
-      set(v) {
-        this.$emit("input", v);
+      deep: true,
+      handler(values) {
+        const obj = Object.create(null);
+        values.forEach((item) => {
+          obj[item.label] = item.value;
+        });
+        this.$emit("input", obj);
+        this.$emit("onChange");
       },
     },
   },
-
+  mounted() {
+    this.setValues();
+  },
   methods: {
     addItem() {
       this.items.push(getEmptyItem());
@@ -46,6 +53,18 @@ export default {
         }
       });
     },
+
+    setValues() {
+      const { value, items } = this;
+      const newItems = [...items];
+      if (value) {
+        for (const label in value) {
+          const key = Date.now().toString() + label;
+          newItems.push({ key: key, label: label, value: value[label] });
+        }
+      }
+      this.items = [...newItems];
+    },
   },
 
   render() {
@@ -57,13 +76,17 @@ export default {
           return (
             <el-row key={item.key} gutter={20}>
               <el-col span={11}>
-                <el-form-item prop={`${this.jsonKey}.${index}.label`}>
-                  <el-input v-model={item.label}></el-input>
+                <el-form-item>
+                  <el-input v-model={item.label}>
+                    <template slot="prepend">key</template>
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col span={11}>
-                <el-form-item prop={`${this.jsonKey}.${index}.value`}>
-                  <el-input v-model={item.value}></el-input>
+                <el-form-item>
+                  <el-input v-model={item.value}>
+                    <template slot="prepend">value</template>
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col span={2}>

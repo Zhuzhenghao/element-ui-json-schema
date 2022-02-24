@@ -1,6 +1,7 @@
 import imageInput from "../image-input/image-input.jsx";
 import group from "../group/group.jsx";
 import kV from "../KV/index.jsx";
+import HelmValues from "../HelmValues/index.jsx";
 import structs from "../structs/index.jsx";
 import innerGroup from "../inner-group/index.jsx";
 import Strings from "../Strings/index.jsx";
@@ -62,12 +63,13 @@ function init(uiSchema) {
   let formModel = {};
   uiSchema.map((param) => {
     switch (param.uiType) {
-      case "KV":
       case "Strings":
       case "Structs": {
         formModel[param.jsonKey] = [];
         break;
       }
+      case "KV":
+      case "HelmValues":
       case "Group":
       case "Ignore":
       case "InnerGroup": {
@@ -116,6 +118,7 @@ export default {
     imageInput,
     group,
     kV,
+    HelmValues,
     structs,
     innerGroup,
     Strings,
@@ -172,6 +175,7 @@ export default {
             description={param.description || ""}
             title={param.label || ""}
             closed:sync={true}
+            key={param.jsonKey}
           >
             {/* <el-form-item {...itemProps}>{children}</el-form-item> */}
             {children}
@@ -263,8 +267,16 @@ export default {
           );
           return getGroup(children);
         }
+        case "HelmValues":
+          let HV = (
+            <helm-values
+              jsonKey={param.jsonKey}
+              v-model={this.formModel[param.jsonKey]}
+            ></helm-values>
+          );
+          return getGroup(HV);
         case "Strings":
-          let children = (
+          let strs = (
             <div>
               <Strings
                 jsonKey={param.jsonKey}
@@ -272,7 +284,7 @@ export default {
               ></Strings>
             </div>
           );
-          return getGroup(children);
+          return getGroup(strs);
         case "SecretSelect":
           return (
             <el-form-item label={param.label}>

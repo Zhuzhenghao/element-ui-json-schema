@@ -22,7 +22,7 @@ function getValues(target, key, newValues) {
 
   if (typeof target === "object") {
     const keys = Object.keys(target);
-    keys.map(subkey => {
+    keys.map((subkey) => {
       getValues(target[subkey], key ? key + "." + subkey : subkey, newValues);
     });
   } else {
@@ -38,15 +38,22 @@ export default {
       type: String,
     },
     value: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  computed: {
+    renderValue() {
+      const newValues = {};
+      getValues(this.value, "", newValues);
+      return newValues;
     },
   },
   methods: {
-    onChange: values => {
+    onChange(values) {
       let helmValues = {};
       if (values) {
-        Object.keys(values).map(key => {
+        Object.keys(values).map((key) => {
           const keys = key.split(".");
           helmValues = setValues(
             helmValues,
@@ -56,17 +63,17 @@ export default {
           );
         });
       }
-      this.props.onChange(helmValues);
-    },
-
-    renderValue: () => {
-      const newValues = {};
-      getValues(this.props.value, "", newValues);
-      return newValues;
+      this.$emit("input", helmValues);
     },
   },
 
   render() {
-    return <k-v jsonKey={this.jsonKey} v-model={value}></k-v>;
+    return (
+      <k-v
+        jsonKey={this.jsonKey}
+        v-model={this.renderValue}
+        v-on:onChange={this.onChange}
+      ></k-v>
+    );
   },
 };

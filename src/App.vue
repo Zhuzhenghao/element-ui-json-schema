@@ -60,7 +60,7 @@ export default {
           command: ['nothing'],
         },
       },
-      annotations: [],
+      annotations: {},
       imagePullSecrets: [],
       port: 8080,
       volumes: [],
