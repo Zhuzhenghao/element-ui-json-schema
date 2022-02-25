@@ -154,7 +154,13 @@ export default {
   },
 
   render() {
-    const items = this.uiSchema.map((param) => {
+    const { uiSchema, inline, value } = this;
+    if (!uiSchema) {
+      return <div />;
+    }
+    const items = uiSchema.map((param) => {
+      const required = param.validate && param.validate.required;
+
       if (param.disable) {
         return;
       }
@@ -163,6 +169,7 @@ export default {
         props: {
           label: param.label,
           prop: param.jsonKey,
+          disabled: param.disable,
           rules: convertRule(param.validate),
         },
       };
@@ -183,10 +190,19 @@ export default {
         );
       };
 
+      const initValue =
+        param.validate.defaultValue || (value && value[param.jsonKey]);
+
       switch (param.uiType) {
         case "Switch": {
           return (
             <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <el-switch v-model={this.formModel[param.jsonKey]}></el-switch>
             </el-form-item>
           );
@@ -194,6 +210,12 @@ export default {
         case "Input": {
           return (
             <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <el-input
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
@@ -204,6 +226,12 @@ export default {
         case "Password": {
           return (
             <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <el-input
                 v-model={this.formModel[param.jsonKey]}
                 show-password
@@ -215,6 +243,12 @@ export default {
         case "Select": {
           return (
             <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <el-select
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
@@ -235,6 +269,12 @@ export default {
         case "Number": {
           return (
             <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <el-input
                 type="number"
                 v-model={this.formModel[param.jsonKey]}
@@ -251,6 +291,12 @@ export default {
 
           return (
             <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <image-input
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
@@ -290,7 +336,13 @@ export default {
           return getGroup(strs);
         case "SecretSelect":
           return (
-            <el-form-item label={param.label}>
+            <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <secret-select
                 v-on:setKeys={this.setKeys}
                 key={param.jsonKey}
@@ -300,7 +352,13 @@ export default {
           );
         case "SecretKeySelect":
           return (
-            <el-form-item label={param.label}>
+            <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <secret-key-select
                 secretKeys={this.secretKeys}
                 key={param.jsonKey}
@@ -310,13 +368,25 @@ export default {
           );
         case "CPUNumber":
           return (
-            <el-form-item label={param.label}>
+            <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <CPU-number v-model={this.formModel[param.jsonKey]}></CPU-number>
             </el-form-item>
           );
         case "MemoryNumber":
           return (
-            <el-form-item label={param.label}>
+            <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips
+                  desc={param.description}
+                  label={param.label}
+                ></info-tips>
+              </template>
               <memory-number
                 v-model={this.formModel[param.jsonKey]}
               ></memory-number>

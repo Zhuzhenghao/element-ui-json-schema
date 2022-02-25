@@ -64,7 +64,7 @@ export default {
       imagePullSecrets: [],
       port: 8080,
       volumes: [],
-      labels: [],
+      labels: {},
       addRevisionLabel: true,
     };
   },
