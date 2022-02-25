@@ -167,6 +167,7 @@ export default {
 
       const itemProps = {
         props: {
+          required: required,
           label: param.label,
           prop: param.jsonKey,
           disabled: param.disable,
