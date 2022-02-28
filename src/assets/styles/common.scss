@@ -201,32 +201,6 @@
   justify-content: flex-end;
 }
 
-.next-breadcrumb-item {
-  .next-select-trigger {
-    min-width: 10px !important;
-    .next-select-inner {
-      min-width: 10px !important;
-      background: none;
-      border: none;
-      .next-input-text-field {
-        display: inline;
-        padding: 0;
-        font-size: 16px;
-        line-height: 2;
-      }
-      .next-input-control {
-        padding-right: 0 !important;
-      }
-    }
-  }
-}
-
-.empty-table-wraper {
-  table {
-    min-height: 400px;
-  }
-}
-
 .el-select .el-input__inner {
   background-color: #fff;
 }
@@ -238,34 +212,6 @@
     text-decoration: underline;
   }
 }
-
-.dm-panel .dm-content {
-  padding: 0 !important;
-}
-.dm-panels {
-  z-index: 8 !important;
-}
-.dm-panel {
-  border-top: none !important;
-  box-shadow: none !important;
-}
-.dm-connector {
-  z-index: 3;
-  .dm-handle {
-    background: #1b58f4 !important;
-  }
-}
-
-.dm-canvas {
-  background-color: transparent !important;
-  .dm-dots {
-    display: none !important;
-  }
-}
-
-// .dm-elements {
-//   top: 100px;
-// }
 
 .colorRed {
   color: red;
@@ -280,34 +226,6 @@
 a {
   color: #1b58f4;
   cursor: pointer;
-}
-
-.commonDialog {
-  width: 800px;
-  height: auto;
-  min-height: 400px;
-  .next-dialog-footer {
-    display: flex;
-    justify-content: center !important;
-    .next-btn {
-      display: block;
-      flex: none !important;
-      width: 100px !important;
-    }
-  }
-  .next-dialog-body {
-    width: 100% !important;
-    max-height: none !important;
-  }
-  .basic {
-    width: 100%;
-    padding: 0 16px;
-  }
-}
-.tableButton {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
 }
 
 .circle {
