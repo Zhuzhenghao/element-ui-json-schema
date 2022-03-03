@@ -10,7 +10,7 @@ module.exports = {
   rules: {
     // don't require .vue extension when importing
     "import/extensions": [
-      // 'error',
+      // "error",
       "always",
       {
         js: "never",

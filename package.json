@@ -11,6 +11,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
+    "eslint-plugin-vuejs-accessibility": "^1.1.1",
     "lodash": "^4.17.21",
     "vue": "^2.6.11"
   },
@@ -18,7 +19,7 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/eslint-config-airbnb": "^6.0.0",
+    "@vue/eslint-config-airbnb": "^3.0.5",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
