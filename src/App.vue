@@ -32,10 +32,10 @@ export default {
     validate() {
       this.$refs.uiSchema
         .validate()
-        .then((valid) => {
+        .then(valid => {
           console.log(valid);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
