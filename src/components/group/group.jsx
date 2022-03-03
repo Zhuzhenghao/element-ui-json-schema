@@ -10,6 +10,10 @@ export default {
     description: {
       type: String,
     },
+    closed: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   data() {
@@ -18,11 +22,19 @@ export default {
     };
   },
 
-  methods: {
-    toggleShowClass() {
-      this.closed = !this.closed;
+  watch: {
+    closed: {
+      handler(val) {
+        this.opened = !val;
+      },
     },
   },
+
+  // methods: {
+  //   toggleShowClass() {
+  //     this.closed = !this.closed;
+  //   },
+  // },
 
   render() {
     return (
@@ -41,12 +53,12 @@ export default {
             </el-col>
           </el-row>
         </div>
-        <If condition={this.opened}>
+        <if condition={this.opened}>
           <div class="group-box">{this.$slots.default}</div>
-        </If>
-        <If condition={!this.opened}>
+        </if>
+        <if condition={!this.opened}>
           <div class="group-box disable" />
-        </If>
+        </if>
       </div>
     );
   },

@@ -8,11 +8,11 @@ export default {
     return (
       <span>
         {this.label}
-        <If condition={!!this.desc}>
+        <if condition={!!this.desc}>
           <el-tooltip content={this.desc} placement="right">
             <i class="el-icon-question"></i>
           </el-tooltip>
-        </If>
+        </if>
       </span>
     );
   },

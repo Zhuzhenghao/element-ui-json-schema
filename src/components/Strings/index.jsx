@@ -42,13 +42,13 @@ export default {
           return (
             <el-row key={item.key}>
               <el-col span={22}>
-                <el-form-item prop={`${this.jsonKey}.${index}`}>
+                <el-form-item>
                   <el-input v-model={items[index]}></el-input>
                 </el-form-item>
               </el-col>
               <el-col span={2}>
-                <div class="mt-5" style={{ padding: '8px 0 8px 12px' }}>
-                  <i class="el-icon-delete" onClick={() => this.remove(index)} />
+                <div class="mt-5">
+                  <el-button icon="el-icon-delete" onClick={() => this.remove(index)} />
                 </div>
               </el-col>
             </el-row>

@@ -17,6 +17,10 @@ export default {
     jsonKey: {
       type: String,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   components: {
@@ -42,7 +46,7 @@ export default {
 
   methods: {
     initValue() {
-      const { parameterGroupOption = [], param = [], formModel } = this;
+      const { parameterGroupOption = [], formModel } = this;
       if (formModel) {
         const keyMap = new Map();
         if (parameterGroupOption) {
@@ -50,24 +54,26 @@ export default {
             if (item && item.keys) {
               keyMap.set(item.keys.sort().join(), item);
             }
+            return null;
           });
         }
         const structList = [];
         formModel.map((item, index) => {
           const key = Date.now().toString() + index;
           const valueKeys = [];
-          for (const itemkey in item) {
-            valueKeys.push(itemkey);
-          }
+          Object.keys(item).forEach(itemkey => valueKeys.push(itemkey));
           const option = keyMap.get(valueKeys.sort().join());
           structList.push({
             key,
             option: option?.keys,
             value: formModel,
           });
+          return null;
         });
         this.structList = structList;
+        return null;
       }
+      return null;
     },
     addStructPlanItem(option, value) {
       const key = Date.now().toString();
@@ -98,6 +104,7 @@ export default {
         <div class="struct-plan-group">
           {this.structList.map((struct, index) => (
             <struct-item
+              disabled={this.disabled}
               v-model={this.formModel[index]}
               option={struct.option}
               param={param}
@@ -107,7 +114,7 @@ export default {
           ))}
         </div>
         <div class="struct-plan-option">
-          <If condition={parameterGroupOption.length === 0}>
+          <if condition={parameterGroupOption.length === 0}>
             <el-button
               onClick={() => {
                 this.addStructPlanItem();
@@ -117,8 +124,8 @@ export default {
             >
               Add
             </el-button>
-          </If>
-          <If condition={parameterGroupOption.length !== 0}>
+          </if>
+          <if condition={parameterGroupOption.length !== 0}>
             <el-dropdown
               on-command={item => {
                 this.addStructPlanItem(item);
@@ -135,7 +142,7 @@ export default {
                 ))}
               </el-dropdown-menu>
             </el-dropdown>
-          </If>
+          </if>
         </div>
       </div>
     );

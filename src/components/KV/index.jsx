@@ -58,10 +58,10 @@ export default {
       const { value, items } = this;
       const newItems = [...items];
       if (value) {
-        for (const label in value) {
-          const key = Date.now().toString() + label;
-          newItems.push({ key: key, label: label, value: value[label] });
-        }
+        Object.keys(value).forEach(item => {
+          const key = Date.now().toString() + item;
+          newItems.push({ key, label: item, value: value[item] });
+        });
       }
       this.items = [...newItems];
     },
@@ -72,7 +72,7 @@ export default {
 
     return (
       <div>
-        {items.map((item, index) => {
+        {items.map(item => {
           return (
             <el-row key={item.key} gutter={20}>
               <el-col span={11}>
@@ -90,8 +90,8 @@ export default {
                 </el-form-item>
               </el-col>
               <el-col span={2}>
-                <div class="mt-5" style={{ padding: '8px 0' }}>
-                  <i class="el-icon-delete" onClick={() => this.remove(item.key)} />
+                <div class="mt-5">
+                  <el-button icon="el-icon-delete" onClick={() => this.remove(item.key)} />
                 </div>
               </el-col>
             </el-row>

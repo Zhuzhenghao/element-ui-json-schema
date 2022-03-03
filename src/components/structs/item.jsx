@@ -11,6 +11,10 @@ export default {
     value: {
       type: Object,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -44,16 +48,16 @@ export default {
     return (
       <div class="struct-item-container">
         <div class="struct-item-content">
-          <ui-schema inline ui-schema={uiSchemas} v-model={this.formModel}></ui-schema>
+          <ui-schema
+            disabled={this.disabled}
+            inline
+            ui-schema={uiSchemas}
+            v-model={this.formModel}
+          ></ui-schema>
         </div>
 
-        <div class="remove-option-container">
-          <i
-            on-click={() => {
-              this.$emit('delete');
-            }}
-            class="el-icon-delete"
-          ></i>
+        <div class="remove-option-container mt-5">
+          <el-button icon="el-icon-delete" onClick={() => this.$emit('delete')}></el-button>
         </div>
       </div>
     );

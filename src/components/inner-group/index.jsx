@@ -13,6 +13,10 @@ export default {
     jsonKey: {
       type: String,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -30,7 +34,13 @@ export default {
     const { uiSchema, jsonKey } = this;
     return (
       <div class="group-inner-container">
-        <ui-schema ui-schema={uiSchema} v-model={this.formModel} inline key={jsonKey}></ui-schema>
+        <ui-schema
+          disabled={this.disabled}
+          ui-schema={uiSchema}
+          v-model={this.formModel}
+          inline
+          key={jsonKey}
+        ></ui-schema>
       </div>
     );
   },

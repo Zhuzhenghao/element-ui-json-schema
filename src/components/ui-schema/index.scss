@@ -29,3 +29,26 @@
 .add-btn {
   text-align: right;
 }
+.el-input-number {
+  width: 100%;
+  .el-input__inner {
+    text-align: left;
+  }
+}
+.mt-5 {
+  .el-button {
+    border: none;
+    background: none;
+    &:hover {
+      background: none !important;
+    }
+  }
+  .el-button.is-disabled {
+    .el-icon-delete {
+      cursor: not-allowed;
+    }
+  }
+}
+.el-row {
+  padding: 5px 0;
+}

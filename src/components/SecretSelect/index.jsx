@@ -32,12 +32,14 @@ export default {
     getSecretKeys(name) {
       const { secrets } = this;
       let keys = [];
-      secrets?.map(secret => {
-        if (secret.metadata.labels['app.oam.dev/sync-alias'] === name && 'data' in secret) {
-          keys = Object.keys(secret.data);
-        }
-        return keys;
-      });
+      if (secrets && secrets.length) {
+        secrets.map(secret => {
+          if (secret.metadata.labels['app.oam.dev/sync-alias'] === name && 'data' in secret) {
+            keys = Object.keys(secret.data);
+          }
+          return keys;
+        });
+      }
       return keys;
     },
 

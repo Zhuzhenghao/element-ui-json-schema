@@ -8,12 +8,12 @@ export default {
       get() {
         let initValue = '';
         if (this.value) {
-          initValue = parseInt(this.value.replace('Mi', ''));
+          initValue = parseInt(this.value.replace('Mi', ''), 10);
         }
         return initValue;
       },
       set(v) {
-        this.$emit('input', v + 'Mi');
+        this.$emit('input', `${v}Mi`);
       },
     },
   },

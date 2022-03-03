@@ -5,6 +5,9 @@ export default {
     value: {
       type: String,
     },
+    jsonKey: {
+      type: String,
+    },
   },
 
   computed: {
@@ -14,6 +17,16 @@ export default {
       },
       set(v) {
         this.$emit('input', v);
+      },
+    },
+  },
+
+  watch: {
+    image: {
+      handler(value) {
+        if (value) {
+          this.$emit('valChange', { key: this.jsonKey, value });
+        }
       },
     },
   },

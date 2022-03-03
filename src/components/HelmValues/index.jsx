@@ -57,7 +57,7 @@ export default {
         Object.keys(values).map(key => {
           const keys = key.split('.');
           helmValues = setValues(helmValues, values[key], keys[0], keys.slice(1));
-          return helmValues;
+          return null;
         });
       }
       this.$emit('input', helmValues);
