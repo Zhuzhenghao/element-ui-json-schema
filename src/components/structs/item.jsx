@@ -1,5 +1,5 @@
 export default {
-  name: "struct-item",
+  name: 'struct-item',
 
   props: {
     param: {
@@ -19,7 +19,7 @@ export default {
         return this.value;
       },
       set(v) {
-        this.$emit("input", v);
+        this.$emit('input', v);
       },
     },
   },
@@ -44,17 +44,13 @@ export default {
     return (
       <div class="struct-item-container">
         <div class="struct-item-content">
-          <ui-schema
-            inline
-            ui-schema={uiSchemas}
-            v-model={this.formModel}
-          ></ui-schema>
+          <ui-schema inline ui-schema={uiSchemas} v-model={this.formModel}></ui-schema>
         </div>
 
         <div class="remove-option-container">
           <i
             on-click={() => {
-              this.$emit("delete");
+              this.$emit('delete');
             }}
             class="el-icon-delete"
           ></i>

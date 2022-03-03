@@ -1,8 +1,8 @@
-import "./index.scss";
-import KV from "../KV/index.jsx";
+import './index.scss';
+import KV from '../KV/index.jsx';
 
 function setValues(target, value, key, keys) {
-  if (!keys || keys.length == 0) {
+  if (!keys || keys.length === 0) {
     target[key] = value;
     return target;
   }
@@ -20,10 +20,11 @@ function getValues(target, key, newValues) {
     return;
   }
 
-  if (typeof target === "object") {
+  if (typeof target === 'object') {
     const keys = Object.keys(target);
-    keys.map((subkey) => {
-      getValues(target[subkey], key ? key + "." + subkey : subkey, newValues);
+    keys.map(subkey => {
+      getValues(target[subkey], key ? `${key}.${subkey}` : subkey, newValues);
+      return null;
     });
   } else {
     newValues[key] = target;
@@ -31,7 +32,7 @@ function getValues(target, key, newValues) {
 }
 
 export default {
-  name: "HelmValues",
+  name: 'HelmValues',
   components: { KV },
   props: {
     jsonKey: {
@@ -45,7 +46,7 @@ export default {
   computed: {
     renderValue() {
       const newValues = {};
-      getValues(this.value, "", newValues);
+      getValues(this.value, '', newValues);
       return newValues;
     },
   },
@@ -53,27 +54,19 @@ export default {
     onChange(values) {
       let helmValues = {};
       if (values) {
-        Object.keys(values).map((key) => {
-          const keys = key.split(".");
-          helmValues = setValues(
-            helmValues,
-            values[key],
-            keys[0],
-            keys.slice(1)
-          );
+        Object.keys(values).map(key => {
+          const keys = key.split('.');
+          helmValues = setValues(helmValues, values[key], keys[0], keys.slice(1));
+          return helmValues;
         });
       }
-      this.$emit("input", helmValues);
+      this.$emit('input', helmValues);
     },
   },
 
   render() {
     return (
-      <k-v
-        jsonKey={this.jsonKey}
-        v-model={this.renderValue}
-        v-on:onChange={this.onChange}
-      ></k-v>
+      <k-v jsonKey={this.jsonKey} v-model={this.renderValue} v-on:onChange={this.onChange}></k-v>
     );
   },
 };

@@ -1,7 +1,7 @@
-import "./index.scss";
+import './index.scss';
 
 export default {
-  name: "group",
+  name: 'group',
 
   props: {
     title: {

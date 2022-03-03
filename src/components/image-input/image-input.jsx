@@ -1,5 +1,5 @@
 export default {
-  name: "image-input",
+  name: 'image-input',
 
   props: {
     value: {
@@ -13,7 +13,7 @@ export default {
         return this.value;
       },
       set(v) {
-        this.$emit("input", v);
+        this.$emit('input', v);
       },
     },
   },
@@ -21,10 +21,7 @@ export default {
   render() {
     return (
       <div>
-        <el-input
-          v-model={this.image}
-          placeholder="please enter image"
-        ></el-input>
+        <el-input v-model={this.image} placeholder="please enter image"></el-input>
       </div>
     );
   },

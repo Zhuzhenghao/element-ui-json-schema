@@ -1,19 +1,19 @@
 export default {
-  name: "MemoryNumber",
+  name: 'MemoryNumber',
   props: {
     value: { type: String },
   },
   computed: {
     formModel: {
       get() {
-        let initValue = "";
+        let initValue = '';
         if (this.value) {
-          initValue = parseInt(this.value.replace("Mi", ""));
+          initValue = parseInt(this.value.replace('Mi', ''));
         }
         return initValue;
       },
       set(v) {
-        this.$emit("input", v + "Mi");
+        this.$emit('input', v + 'Mi');
       },
     },
   },

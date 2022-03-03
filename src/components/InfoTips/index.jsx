@@ -1,5 +1,5 @@
 export default {
-  name: "info-tips",
+  name: 'info-tips',
   props: {
     desc: { type: String },
     label: { type: String },

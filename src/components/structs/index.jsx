@@ -1,8 +1,8 @@
-import structItem from "./item.jsx";
-import "./index.scss";
+import structItem from './item.jsx';
+import './index.scss';
 
 export default {
-  name: "structs",
+  name: 'structs',
 
   props: {
     param: {
@@ -35,7 +35,7 @@ export default {
         return this.value;
       },
       set(v) {
-        this.$emit("input", v);
+        this.$emit('input', v);
       },
     },
   },
@@ -130,7 +130,7 @@ export default {
               <el-dropdown-menu slot="dropdown">
                 {parameterGroupOption.map(item => (
                   <el-dropdown-item command={item}>
-                    {item.label || item.keys.join(":")}
+                    {item.label || item.keys.join(':')}
                   </el-dropdown-item>
                 ))}
               </el-dropdown-menu>

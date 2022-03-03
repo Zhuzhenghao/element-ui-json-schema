@@ -1,7 +1,7 @@
-import "./index.scss";
+import './index.scss';
 
 export default {
-  name: "Strings",
+  name: 'Strings',
 
   props: {
     jsonKey: { type: String },
@@ -15,7 +15,7 @@ export default {
       },
       set(v) {
         const arr = v.map(item => item.value);
-        this.$emit("input", arr);
+        this.$emit('input', arr);
       },
     },
   },
@@ -47,11 +47,8 @@ export default {
                 </el-form-item>
               </el-col>
               <el-col span={2}>
-                <div class="mt-5" style={{ padding: "8px 0 8px 12px" }}>
-                  <i
-                    class="el-icon-delete"
-                    onClick={() => this.remove(index)}
-                  />
+                <div class="mt-5" style={{ padding: '8px 0 8px 12px' }}>
+                  <i class="el-icon-delete" onClick={() => this.remove(index)} />
                 </div>
               </el-col>
             </el-row>

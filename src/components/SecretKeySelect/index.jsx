@@ -1,7 +1,7 @@
-import "./index.scss";
+import './index.scss';
 
 export default {
-  name: "SecretKeySelect",
+  name: 'SecretKeySelect',
   props: {
     value: {
       type: String,
@@ -18,7 +18,7 @@ export default {
         return this.value;
       },
       set(v) {
-        this.$emit("input", v);
+        this.$emit('input', v);
       },
     },
   },
@@ -28,7 +28,7 @@ export default {
     const { secretKeys } = this;
     return (
       <el-select v-model={this.formModel}>
-        {secretKeys?.map((op) => {
+        {secretKeys?.map(op => {
           return <el-option key={op} label={op} value={op}></el-option>;
         })}
       </el-select>

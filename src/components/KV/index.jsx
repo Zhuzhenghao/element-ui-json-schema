@@ -1,13 +1,13 @@
 function getEmptyItem() {
   return {
     key: Date.now().toString(),
-    label: "",
-    value: "",
+    label: '',
+    value: '',
   };
 }
 
 export default {
-  name: "k-v",
+  name: 'k-v',
 
   props: {
     jsonKey: {
@@ -30,11 +30,11 @@ export default {
       deep: true,
       handler(values) {
         const obj = Object.create(null);
-        values.forEach((item) => {
+        values.forEach(item => {
           obj[item.label] = item.value;
         });
-        this.$emit("input", obj);
-        this.$emit("onChange");
+        this.$emit('input', obj);
+        this.$emit('onChange');
       },
     },
   },
@@ -90,11 +90,8 @@ export default {
                 </el-form-item>
               </el-col>
               <el-col span={2}>
-                <div class="mt-5" style={{ padding: "8px 0" }}>
-                  <i
-                    class="el-icon-delete"
-                    onClick={() => this.remove(item.key)}
-                  />
+                <div class="mt-5" style={{ padding: '8px 0' }}>
+                  <i class="el-icon-delete" onClick={() => this.remove(item.key)} />
                 </div>
               </el-col>
             </el-row>

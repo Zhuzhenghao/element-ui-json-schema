@@ -1,17 +1,17 @@
-import imageInput from "../image-input/image-input.jsx";
-import group from "../group/group.jsx";
-import kV from "../KV/index.jsx";
-import HelmValues from "../HelmValues/index.jsx";
-import structs from "../structs/index.jsx";
-import innerGroup from "../inner-group/index.jsx";
-import Strings from "../Strings/index.jsx";
-import SecretKeySelect from "../SecretKeySelect/index.jsx";
-import SecretSelect from "../SecretSelect/index.jsx";
-import MemoryNumber from "../MemoryNumber/index.jsx";
-import CPUNumber from "../CPUNumber/index.jsx";
-import "./index.scss";
-
-import { checkImageName } from "../../core/constant/index.js";
+import { isEmpty } from 'lodash';
+import imageInput from '../image-input/image-input.jsx';
+import group from '../group/group.jsx';
+import kV from '../KV/index.jsx';
+import HelmValues from '../HelmValues/index.jsx';
+import structs from '../structs/index.jsx';
+import innerGroup from '../inner-group/index.jsx';
+import Strings from '../Strings/index.jsx';
+import SecretKeySelect from '../SecretKeySelect/index.jsx';
+import SecretSelect from '../SecretSelect/index.jsx';
+import MemoryNumber from '../MemoryNumber/index.jsx';
+import CPUNumber from '../CPUNumber/index.jsx';
+import './index.scss';
+import { checkImageName } from '../../core/constant/index.js';
 
 function convertRule(validate) {
   const rules = [];
@@ -21,19 +21,19 @@ function convertRule(validate) {
   if (validate.required) {
     rules.push({
       required: true,
-      message: "This field is required.",
+      message: 'This field is required.',
     });
   }
   if (validate.min) {
     rules.push({
       min: validate.min,
-      message: "Enter a number greater than " + validate.min,
+      message: `Enter a number greater than ${validate.min}`,
     });
   }
   if (validate.max) {
     rules.push({
       max: validate.max,
-      message: "Enter a number less than " + validate.max,
+      message: `Enter a number less than ${validate.max}`,
     });
   }
   if (validate.minLength) {
@@ -51,54 +51,56 @@ function convertRule(validate) {
   if (validate.pattern) {
     rules.push({
       pattern: validate.pattern,
-      message:
-        `Please enter a value that conforms to the specification. ` +
-        validate.pattern,
+      message: `Please enter a value that conforms to the specification. ${validate.pattern}`,
     });
   }
   return rules;
 }
 
 function init(uiSchema) {
-  let formModel = {};
-  uiSchema.map((param) => {
+  const formModel = {};
+  uiSchema.map(param => {
+    const defaultVal = param.validate?.defaultValue;
     switch (param.uiType) {
-      case "Strings":
-      case "Structs": {
-        formModel[param.jsonKey] = [];
+      case 'Strings':
+      case 'Structs': {
+        formModel[param.jsonKey] = defaultVal || [];
         break;
       }
-      case "KV":
-      case "HelmValues":
-      case "Group":
-      case "Ignore":
-      case "InnerGroup": {
-        formModel[param.jsonKey] = {};
+      case 'KV':
+      case 'HelmValues':
+      case 'Group':
+      case 'Ignore':
+      case 'InnerGroup': {
+        formModel[param.jsonKey] = defaultVal || {};
         break;
       }
-      case "Input":
-      case "Password":
-      case "ImageInput":
-      case "Number":
-      case "CPUNumber":
-      case "MemoryNumber":
-      case "Select":
-      case "SecretSelect":
-      case "SecretKeySelect": {
-        formModel[param.jsonKey] = "";
+      case 'Input':
+      case 'Password':
+      case 'ImageInput':
+      case 'Number':
+      case 'CPUNumber':
+      case 'MemoryNumber':
+      case 'Select':
+      case 'SecretSelect':
+      case 'SecretKeySelect': {
+        formModel[param.jsonKey] = defaultVal || '';
         break;
       }
-      case "Switch": {
-        formModel[param.jsonKey] = false;
+      case 'Switch': {
+        formModel[param.jsonKey] = defaultVal || false;
         break;
       }
+      default:
+        break;
     }
+    return null;
   });
   return formModel;
 }
 
 export default {
-  name: "ui-schema",
+  name: 'ui-schema',
 
   props: {
     uiSchema: {
@@ -111,6 +113,10 @@ export default {
     },
     value: {
       type: Object,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -129,11 +135,10 @@ export default {
   },
 
   data() {
-    let formModel = init(this.uiSchema, this.value);
-
     return {
-      formModel,
+      formModel: {},
       secretKeys: [],
+      formData: {},
     };
   },
 
@@ -144,30 +149,39 @@ export default {
     setKeys(keys) {
       this.secretKeys = [...keys];
     },
+    handleChange(obj) {
+      this.formData[obj.key] = obj.value;
+    },
     validate() {
       return this.$refs.schemaForm.validate();
     },
   },
 
+  created() {
+    this.formModel = init(this.uiSchema);
+  },
+
   mounted() {
-    this.setValues(this.value);
+    if (!isEmpty(this.value)) {
+      this.setValues(this.value);
+    }
   },
 
   render() {
-    const { uiSchema, inline, value } = this;
+    const { uiSchema } = this;
     if (!uiSchema) {
       return <div />;
     }
-    const items = uiSchema.map((param) => {
+    const items = uiSchema.map(param => {
       const required = param.validate && param.validate.required;
 
       if (param.disable) {
-        return;
+        return null;
       }
 
       const itemProps = {
         props: {
-          required: required,
+          required,
           label: param.label,
           prop: param.jsonKey,
           disabled: param.disable,
@@ -175,14 +189,20 @@ export default {
         },
       };
 
-      const getGroup = (children) => {
-        Reflect.deleteProperty(itemProps.props, "label");
+      const getGroup = children => {
+        Reflect.deleteProperty(itemProps.props, 'label');
+        let closed = true;
+        if (typeof this.formModel[param.jsonKey] === 'object') {
+          closed = isEmpty(this.formModel[param.jsonKey]);
+        } else if (this.formModel[param.jsonKey]) {
+          closed = !this.formModel[param.jsonKey].length;
+        }
+
         return (
           <group
-            hasToggleIcon
-            description={param.description || ""}
-            title={param.label || ""}
-            closed:sync={true}
+            description={param.description || ''}
+            title={param.label || ''}
+            closed={closed}
             key={param.jsonKey}
           >
             {/* <el-form-item {...itemProps}>{children}</el-form-item> */}
@@ -191,47 +211,34 @@ export default {
         );
       };
 
-      const initValue =
-        param.validate.defaultValue || (value && value[param.jsonKey]);
+      // const initValue = param.validate.defaultValue || (value && value[param.jsonKey]);
 
       switch (param.uiType) {
-        case "Switch": {
+        case 'Switch': {
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
               <el-switch v-model={this.formModel[param.jsonKey]}></el-switch>
             </el-form-item>
           );
         }
-        case "Input": {
+        case 'Input': {
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
-              <el-input
-                v-model={this.formModel[param.jsonKey]}
-                key={param.jsonKey}
-              ></el-input>
+              <el-input v-model={this.formModel[param.jsonKey]} key={param.jsonKey}></el-input>
             </el-form-item>
           );
         }
-        case "Password": {
+        case 'Password': {
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
               <el-input
                 v-model={this.formModel[param.jsonKey]}
@@ -241,108 +248,84 @@ export default {
             </el-form-item>
           );
         }
-        case "Select": {
+        case 'Select': {
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
-              <el-select
-                v-model={this.formModel[param.jsonKey]}
-                key={param.jsonKey}
-              >
-                {param.validate.options.map((op) => {
-                  return (
-                    <el-option
-                      key={op.value}
-                      label={op.label}
-                      value={op.value}
-                    ></el-option>
-                  );
+              <el-select v-model={this.formModel[param.jsonKey]} key={param.jsonKey}>
+                {param.validate.options.map(op => {
+                  return <el-option key={op.value} label={op.label} value={op.value}></el-option>;
                 })}
               </el-select>
             </el-form-item>
           );
         }
-        case "Number": {
+        case 'Number': {
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
-              <el-input
-                type="number"
+              <el-input-number
+                controls-position="right"
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
-              ></el-input>
+              ></el-input-number>
             </el-form-item>
           );
         }
-        case "ImageInput": {
+        case 'ImageInput': {
           itemProps.props.rules.push({
             pattern: checkImageName,
-            message: "Please enter a valid image name",
+            message: 'Please enter a valid image name',
           });
 
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
               <image-input
+                v-on:valChange={this.handleChange}
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
+                jsonKey={param.jsonKey}
               ></image-input>
             </el-form-item>
           );
         }
-        case "KV": {
-          let children = (
+        case 'KV': {
+          return getGroup(
             <k-v
               key={param.jsonKey}
               jsonKey={param.jsonKey}
               v-model={this.formModel[param.jsonKey]}
-            ></k-v>
+            ></k-v>,
           );
-          return getGroup(children);
         }
-        case "HelmValues":
-          let HV = (
+        case 'HelmValues':
+          return getGroup(
             <helm-values
               key={param.jsonKey}
               jsonKey={param.jsonKey}
               v-model={this.formModel[param.jsonKey]}
-            ></helm-values>
+            ></helm-values>,
           );
-          return getGroup(HV);
-        case "Strings":
-          let strs = (
-            <div>
-              <Strings
-                key={param.jsonKey}
-                jsonKey={param.jsonKey}
-                v-model={this.formModel[param.jsonKey]}
-              ></Strings>
-            </div>
+        case 'Strings':
+          return getGroup(
+            <Strings
+              key={param.jsonKey}
+              jsonKey={param.jsonKey}
+              v-model={this.formModel[param.jsonKey]}
+            ></Strings>,
           );
-          return getGroup(strs);
-        case "SecretSelect":
+        case 'SecretSelect':
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
               <secret-select
                 v-on:setKeys={this.setKeys}
@@ -351,14 +334,11 @@ export default {
               ></secret-select>
             </el-form-item>
           );
-        case "SecretKeySelect":
+        case 'SecretKeySelect':
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
               <secret-key-select
                 secretKeys={this.secretKeys}
@@ -367,42 +347,35 @@ export default {
               ></secret-key-select>
             </el-form-item>
           );
-        case "CPUNumber":
+        case 'CPUNumber':
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
               <CPU-number v-model={this.formModel[param.jsonKey]}></CPU-number>
             </el-form-item>
           );
-        case "MemoryNumber":
+        case 'MemoryNumber':
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
-                <info-tips
-                  desc={param.description}
-                  label={param.label}
-                ></info-tips>
+                <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
-              <memory-number
-                v-model={this.formModel[param.jsonKey]}
-              ></memory-number>
+              <memory-number v-model={this.formModel[param.jsonKey]}></memory-number>
             </el-form-item>
           );
-        case "Group":
+        case 'Group':
           if (param.subParameters && param.subParameters.length > 0) {
             return (
               <group
                 key={param.jsonKey}
-                description={param.description || ""}
-                title={param.label || ""}
-                jsonKey={param.jsonKey || ""}
+                description={param.description || ''}
+                title={param.label || ''}
+                jsonKey={param.jsonKey || ''}
               >
                 <ui-schema
+                  disabled={this.disabled}
                   uiSchema={param.subParameters}
                   v-model={this.formModel[param.jsonKey]}
                 ></ui-schema>
@@ -410,28 +383,30 @@ export default {
             );
           }
           return <div />;
-        case "Structs":
+        case 'Structs':
           if (param.subParameters && param.subParameters.length > 0) {
             return getGroup(
               <structs
+                disabled={this.disabled}
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
                 jsonKey={param.jsonKey}
                 param={param.subParameters}
                 parameterGroupOption={param.subParameterGroupOption}
-              ></structs>
+              ></structs>,
             );
           }
           return <div />;
-        case "InnerGroup":
+        case 'InnerGroup':
           return (
             <inner-group
+              disabled={this.disabled}
               uiSchema={param.subParameters}
               v-model={this.formModel[param.jsonKey]}
               jsonKey={param.jsonKey}
             ></inner-group>
           );
-        case "Ignore":
+        case 'Ignore':
           if (param.subParameters && param.subParameters.length > 0) {
             return (
               <ui-schema
@@ -443,24 +418,22 @@ export default {
             );
           }
           return <div />;
+        default:
+          return <div />;
       }
     });
 
     const formProps = {
       props: {
         model: this.formModel,
-        labelPosition: "top",
+        labelPosition: 'top',
         inline: this.inline,
+        disabled: this.disabled,
       },
     };
 
     return (
-      <el-form
-        ref="schemaForm"
-        size="medium"
-        {...formProps}
-        class="ui-schema-container"
-      >
+      <el-form ref="schemaForm" size="small" {...formProps} class="ui-schema-container">
         {items}
       </el-form>
     );
@@ -471,7 +444,7 @@ export default {
     formModel: {
       deep: true,
       handler() {
-        this.$emit("input", this.formModel);
+        this.$emit('input', this.formModel);
       },
     },
   },

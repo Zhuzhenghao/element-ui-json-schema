@@ -1,0 +1,8 @@
+**/*.md
+**/*.ejs
+**/*.html
+package.json
+es/**
+lib/**
+_site/**
+dist/**

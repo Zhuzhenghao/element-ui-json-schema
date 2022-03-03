@@ -1,5 +1,5 @@
 export default {
-  name: "CPUNumber",
+  name: 'CPUNumber',
   props: {
     value: { type: String },
   },
@@ -13,7 +13,7 @@ export default {
         return initValue;
       },
       set(v) {
-        this.$emit("input", `${v}`);
+        this.$emit('input', `${v}`);
       },
     },
   },
