@@ -22,19 +22,20 @@ export default {
   data() {
     return {
       items: [],
-      form: {},
     };
   },
   watch: {
     items: {
       deep: true,
+      immediate: true,
       handler(values) {
         const obj = Object.create(null);
         values.forEach(item => {
           obj[item.label] = item.value;
         });
         this.$emit('input', obj);
-        this.$emit('onChange');
+        this.$emit('onChange', obj);
+        this.$emit('valChange', { key: this.jsonKey, value: obj });
       },
     },
   },

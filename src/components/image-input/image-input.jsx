@@ -23,6 +23,7 @@ export default {
 
   watch: {
     image: {
+      immediate: true,
       handler(value) {
         this.$emit('valChange', { key: this.jsonKey, value });
       },

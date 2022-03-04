@@ -1739,7 +1739,9 @@
       "sort": 100,
       "label": "Port",
       "description": "Deprecated field, please use ports instead",
-      "validate": {},
+      "validate": {
+        "defaultValue": 8080
+      },
       "jsonKey": "port",
       "uiType": "Number",
       "disable": false

@@ -60,10 +60,11 @@ function convertRule(validate) {
 function init(uiSchema) {
   const formModel = {};
   uiSchema.map(param => {
+    const defaultVal = param.validate?.defaultValue;
     switch (param.uiType) {
       case 'Strings':
       case 'Structs': {
-        formModel[param.jsonKey] = [];
+        formModel[param.jsonKey] = defaultVal || [];
         break;
       }
       case 'KV':
@@ -71,7 +72,7 @@ function init(uiSchema) {
       case 'Group':
       case 'Ignore':
       case 'InnerGroup': {
-        formModel[param.jsonKey] = {};
+        formModel[param.jsonKey] = defaultVal || {};
         break;
       }
       case 'Input':
@@ -83,11 +84,11 @@ function init(uiSchema) {
       case 'Select':
       case 'SecretSelect':
       case 'SecretKeySelect': {
-        formModel[param.jsonKey] = '';
+        formModel[param.jsonKey] = defaultVal || '';
         break;
       }
       case 'Switch': {
-        formModel[param.jsonKey] = false;
+        formModel[param.jsonKey] = defaultVal || false;
         break;
       }
       default:
@@ -159,7 +160,7 @@ export default {
       }
     },
     changeVal(value, jsonKey) {
-      if (value || value === false) {
+      if (value || value === false || value === 0) {
         this.$set(this.formData, jsonKey, value);
       } else {
         this.$delete(this.formData, jsonKey);
@@ -283,7 +284,9 @@ export default {
               <el-select
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
-                v-on:change={$event => this.changeVal($event, param.jsonKey)}
+                v-on:change={($event => this.changeVal($event, param.jsonKey))(
+                  this.formModel[param.jsonKey],
+                )}
               >
                 {param.validate.options.map(op => {
                   return <el-option key={op.value} label={op.label} value={op.value}></el-option>;
@@ -302,6 +305,7 @@ export default {
                 controls-position="right"
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
+                v-on:input={$event => this.changeVal($event, param.jsonKey)}
               ></el-input-number>
             </el-form-item>
           );
@@ -332,6 +336,7 @@ export default {
               key={param.jsonKey}
               jsonKey={param.jsonKey}
               v-model={this.formModel[param.jsonKey]}
+              v-on:valChange={this.handleChange}
             ></k-v>,
           );
         }
@@ -419,7 +424,13 @@ export default {
                   disabled={this.disabled}
                   uiSchema={param.subParameters}
                   v-model={this.formModel[param.jsonKey]}
-                  v-on:valChange={this.handleChange}
+                  {...{
+                    on: {
+                      'update:form': val => {
+                        this.$set(this.formData, param.jsonKey, val);
+                      },
+                    },
+                  }}
                 ></ui-schema>
               </group>
             );
@@ -457,7 +468,6 @@ export default {
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
                 jsonKey={param.jsonKey}
-                v-on:valChange={this.handleChange}
                 inline
               ></ui-schema>
             );
@@ -490,18 +500,11 @@ export default {
       deep: true,
       handler() {
         this.$emit('input', this.formModel);
-        if (this.inline) {
-          this.$emit('valChange', {
-            key: this.jsonKey,
-            value: {},
-          });
-        }
       },
     },
     formData: {
       deep: true,
       handler() {
-        console.log(this.formData);
         this.$emit('update:form', this.formData);
       },
     },

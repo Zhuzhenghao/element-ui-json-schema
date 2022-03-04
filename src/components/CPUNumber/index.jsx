@@ -21,6 +21,7 @@ export default {
 
   watch: {
     formModel: {
+      immediate: true,
       handler(value) {
         this.$emit('valChange', { key: this.jsonKey, value: value ? `${value}` : null });
       },

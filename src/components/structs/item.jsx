@@ -53,7 +53,6 @@ export default {
             inline
             ui-schema={uiSchemas}
             v-model={this.formModel}
-            v-on:valChange={this.handleChange}
           ></ui-schema>
         </div>
 
