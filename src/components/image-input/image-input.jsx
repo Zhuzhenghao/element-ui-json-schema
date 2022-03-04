@@ -24,9 +24,7 @@ export default {
   watch: {
     image: {
       handler(value) {
-        if (value) {
-          this.$emit('valChange', { key: this.jsonKey, value });
-        }
+        this.$emit('valChange', { key: this.jsonKey, value });
       },
     },
   },

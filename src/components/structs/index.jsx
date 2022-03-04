@@ -44,6 +44,17 @@ export default {
     },
   },
 
+  watch: {
+    formModel: {
+      handler(value) {
+        this.$emit('valChange', {
+          key: this.jsonKey,
+          value: value.length ? value : null,
+        });
+      },
+    },
+  },
+
   methods: {
     initValue() {
       const { parameterGroupOption = [], formModel } = this;

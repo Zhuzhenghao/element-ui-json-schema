@@ -60,11 +60,10 @@ function convertRule(validate) {
 function init(uiSchema) {
   const formModel = {};
   uiSchema.map(param => {
-    const defaultVal = param.validate?.defaultValue;
     switch (param.uiType) {
       case 'Strings':
       case 'Structs': {
-        formModel[param.jsonKey] = defaultVal || [];
+        formModel[param.jsonKey] = [];
         break;
       }
       case 'KV':
@@ -72,7 +71,7 @@ function init(uiSchema) {
       case 'Group':
       case 'Ignore':
       case 'InnerGroup': {
-        formModel[param.jsonKey] = defaultVal || {};
+        formModel[param.jsonKey] = {};
         break;
       }
       case 'Input':
@@ -84,11 +83,11 @@ function init(uiSchema) {
       case 'Select':
       case 'SecretSelect':
       case 'SecretKeySelect': {
-        formModel[param.jsonKey] = defaultVal || '';
+        formModel[param.jsonKey] = '';
         break;
       }
       case 'Switch': {
-        formModel[param.jsonKey] = defaultVal || false;
+        formModel[param.jsonKey] = false;
         break;
       }
       default:
@@ -113,6 +112,9 @@ export default {
     },
     value: {
       type: Object,
+    },
+    jsonKey: {
+      type: String,
     },
     disabled: {
       type: Boolean,
@@ -150,7 +152,18 @@ export default {
       this.secretKeys = [...keys];
     },
     handleChange(obj) {
-      this.formData[obj.key] = obj.value;
+      if (obj.value) {
+        this.$set(this.formData, obj.key, obj.value);
+      } else {
+        this.$delete(this.formData, obj.key);
+      }
+    },
+    changeVal(value, jsonKey) {
+      if (value || value === false) {
+        this.$set(this.formData, jsonKey, value);
+      } else {
+        this.$delete(this.formData, jsonKey);
+      }
     },
     validate() {
       return this.$refs.schemaForm.validate();
@@ -194,8 +207,14 @@ export default {
         let closed = true;
         if (typeof this.formModel[param.jsonKey] === 'object') {
           closed = isEmpty(this.formModel[param.jsonKey]);
+          if (isEmpty(this.formModel[param.jsonKey])) {
+            this.$delete(this.formData, param.jsonKey);
+          }
         } else if (this.formModel[param.jsonKey]) {
           closed = !this.formModel[param.jsonKey].length;
+          if (!this.formModel[param.jsonKey].length) {
+            this.$delete(this.formData, param.jsonKey);
+          }
         }
 
         return (
@@ -220,7 +239,10 @@ export default {
               <template slot="label">
                 <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
-              <el-switch v-model={this.formModel[param.jsonKey]}></el-switch>
+              <el-switch
+                v-model={this.formModel[param.jsonKey]}
+                v-on:change={$event => this.changeVal($event, param.jsonKey)}
+              ></el-switch>
             </el-form-item>
           );
         }
@@ -230,7 +252,11 @@ export default {
               <template slot="label">
                 <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
-              <el-input v-model={this.formModel[param.jsonKey]} key={param.jsonKey}></el-input>
+              <el-input
+                v-model={this.formModel[param.jsonKey]}
+                key={param.jsonKey}
+                v-on:input={$event => this.changeVal($event, param.jsonKey)}
+              ></el-input>
             </el-form-item>
           );
         }
@@ -254,7 +280,11 @@ export default {
               <template slot="label">
                 <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
-              <el-select v-model={this.formModel[param.jsonKey]} key={param.jsonKey}>
+              <el-select
+                v-model={this.formModel[param.jsonKey]}
+                key={param.jsonKey}
+                v-on:change={$event => this.changeVal($event, param.jsonKey)}
+              >
                 {param.validate.options.map(op => {
                   return <el-option key={op.value} label={op.label} value={op.value}></el-option>;
                 })}
@@ -319,6 +349,7 @@ export default {
               key={param.jsonKey}
               jsonKey={param.jsonKey}
               v-model={this.formModel[param.jsonKey]}
+              v-on:valChange={this.handleChange}
             ></Strings>,
           );
         case 'SecretSelect':
@@ -353,7 +384,11 @@ export default {
               <template slot="label">
                 <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
-              <CPU-number v-model={this.formModel[param.jsonKey]}></CPU-number>
+              <CPU-number
+                v-model={this.formModel[param.jsonKey]}
+                jsonKey={param.jsonKey}
+                v-on:valChange={this.handleChange}
+              ></CPU-number>
             </el-form-item>
           );
         case 'MemoryNumber':
@@ -362,7 +397,11 @@ export default {
               <template slot="label">
                 <info-tips desc={param.description} label={param.label}></info-tips>
               </template>
-              <memory-number v-model={this.formModel[param.jsonKey]}></memory-number>
+              <memory-number
+                v-model={this.formModel[param.jsonKey]}
+                jsonKey={param.jsonKey}
+                v-on:valChange={this.handleChange}
+              ></memory-number>
             </el-form-item>
           );
         case 'Group':
@@ -375,9 +414,12 @@ export default {
                 jsonKey={param.jsonKey || ''}
               >
                 <ui-schema
+                  inline
+                  jsonKey={param.jsonKey}
                   disabled={this.disabled}
                   uiSchema={param.subParameters}
                   v-model={this.formModel[param.jsonKey]}
+                  v-on:valChange={this.handleChange}
                 ></ui-schema>
               </group>
             );
@@ -393,6 +435,7 @@ export default {
                 jsonKey={param.jsonKey}
                 param={param.subParameters}
                 parameterGroupOption={param.subParameterGroupOption}
+                v-on:valChange={this.handleChange}
               ></structs>,
             );
           }
@@ -413,6 +456,8 @@ export default {
                 uiSchema={param.subParameters}
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
+                jsonKey={param.jsonKey}
+                v-on:valChange={this.handleChange}
                 inline
               ></ui-schema>
             );
@@ -445,6 +490,19 @@ export default {
       deep: true,
       handler() {
         this.$emit('input', this.formModel);
+        if (this.inline) {
+          this.$emit('valChange', {
+            key: this.jsonKey,
+            value: {},
+          });
+        }
+      },
+    },
+    formData: {
+      deep: true,
+      handler() {
+        console.log(this.formData);
+        this.$emit('update:form', this.formData);
       },
     },
   },

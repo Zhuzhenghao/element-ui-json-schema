@@ -1,12 +1,13 @@
 <template>
   <div id="app">
+    {{formData}}
     <ui-schema
       ref="uiSchema"
       :ui-schema="schema.uiSchema"
       v-model="data"
+      :form.sync="formData"
     ></ui-schema>
 
-    {{data}}
     <el-button
       type="primary"
       @click="validate"
@@ -26,6 +27,7 @@ export default {
     return {
       schema,
       data: {},
+      formData: {},
     };
   },
   methods: {

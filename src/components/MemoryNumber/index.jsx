@@ -2,6 +2,7 @@ export default {
   name: 'MemoryNumber',
   props: {
     value: { type: String },
+    jsonKey: { type: String },
   },
   computed: {
     formModel: {
@@ -14,6 +15,14 @@ export default {
       },
       set(v) {
         this.$emit('input', `${v}Mi`);
+      },
+    },
+  },
+
+  watch: {
+    formModel: {
+      handler(value) {
+        this.$emit('valChange', { key: this.jsonKey, value: value ? `${value}Mi` : null });
       },
     },
   },

@@ -14,8 +14,18 @@ export default {
         return this.value;
       },
       set(v) {
-        const arr = v.map(item => item.value);
-        this.$emit('input', arr);
+        this.$emit('input', v);
+      },
+    },
+  },
+
+  watch: {
+    items: {
+      handler(value) {
+        this.$emit('valChange', {
+          key: this.jsonKey,
+          value: value.length ? value : null,
+        });
       },
     },
   },
@@ -26,11 +36,7 @@ export default {
     },
 
     remove(index) {
-      this.items.forEach((item, i) => {
-        if (i === index) {
-          this.items.splice(i, 1);
-        }
-      });
+      this.items.splice(index, 1);
     },
   },
 
