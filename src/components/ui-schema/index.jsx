@@ -224,6 +224,7 @@ export default {
             title={param.label || ''}
             closed={closed}
             key={param.jsonKey}
+            jsonKey={param.jsonKey || ''}
           >
             {/* <el-form-item {...itemProps}>{children}</el-form-item> */}
             {children}
@@ -409,28 +410,21 @@ export default {
           );
         case 'Group':
           if (param.subParameters && param.subParameters.length > 0) {
-            return (
-              <group
-                key={param.jsonKey}
-                description={param.description || ''}
-                title={param.label || ''}
-                jsonKey={param.jsonKey || ''}
-              >
-                <ui-schema
-                  inline
-                  jsonKey={param.jsonKey}
-                  disabled={this.disabled}
-                  uiSchema={param.subParameters}
-                  v-model={this.formModel[param.jsonKey]}
-                  {...{
-                    on: {
-                      'update:form': val => {
-                        this.$set(this.formData, param.jsonKey, val);
-                      },
+            return getGroup(
+              <ui-schema
+                inline
+                jsonKey={param.jsonKey}
+                disabled={this.disabled}
+                uiSchema={param.subParameters}
+                v-model={this.formModel[param.jsonKey]}
+                {...{
+                  on: {
+                    'update:form': val => {
+                      this.$set(this.formData, param.jsonKey, val);
                     },
-                  }}
-                ></ui-schema>
-              </group>
+                  },
+                }}
+              ></ui-schema>,
             );
           }
           return <div />;
