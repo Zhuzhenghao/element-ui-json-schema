@@ -14,6 +14,9 @@ export default {
       type: Boolean,
       default: true,
     },
+    jsonKey: {
+      type: String,
+    },
   },
 
   data() {
@@ -30,11 +33,13 @@ export default {
     },
   },
 
-  // methods: {
-  //   toggleShowClass() {
-  //     this.closed = !this.closed;
-  //   },
-  // },
+  methods: {
+    toggleShowClass(value) {
+      if (!value) {
+        this.$emit('closed', this.jsonKey);
+      }
+    },
+  },
 
   render() {
     return (
@@ -46,7 +51,7 @@ export default {
               <div class="group-title-desc">{this.description}</div>
             </el-col>
             <el-col span={3} class="flexcenter">
-              <el-switch v-model={this.opened}></el-switch>
+              <el-switch v-model={this.opened} v-on:change={this.toggleShowClass}></el-switch>
               {/* <If condition={this.opened}>
                 <i class="el-icon-arrow-up icon"></i>
               </If> */}

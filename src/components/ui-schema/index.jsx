@@ -166,6 +166,11 @@ export default {
         this.$delete(this.formData, jsonKey);
       }
     },
+    checkEmpty(key) {
+      if (isEmpty(this.formData[key])) {
+        this.$delete(this.formData, key);
+      }
+    },
     validate() {
       return this.$refs.schemaForm.validate();
     },
@@ -225,6 +230,7 @@ export default {
             closed={closed}
             key={param.jsonKey}
             jsonKey={param.jsonKey || ''}
+            v-on:closed={this.checkEmpty}
           >
             {/* <el-form-item {...itemProps}>{children}</el-form-item> */}
             {children}
@@ -243,7 +249,9 @@ export default {
               </template>
               <el-switch
                 v-model={this.formModel[param.jsonKey]}
-                v-on:change={$event => this.changeVal($event, param.jsonKey)}
+                v-on:change={$event => {
+                  this.changeVal($event, param.jsonKey);
+                }}
               ></el-switch>
             </el-form-item>
           );
@@ -285,7 +293,9 @@ export default {
               <el-select
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
-                v-on:change={$event => this.changeVal($event, param.jsonKey)}
+                v-on:change={$event => {
+                  this.changeVal($event, param.jsonKey);
+                }}
               >
                 {param.validate.options.map(op => {
                   return <el-option key={op.value} label={op.label} value={op.value}></el-option>;
