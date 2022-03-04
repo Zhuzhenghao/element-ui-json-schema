@@ -284,9 +284,7 @@ export default {
               <el-select
                 v-model={this.formModel[param.jsonKey]}
                 key={param.jsonKey}
-                v-on:change={($event => this.changeVal($event, param.jsonKey))(
-                  this.formModel[param.jsonKey],
-                )}
+                v-on:change={$event => this.changeVal($event, param.jsonKey)}
               >
                 {param.validate.options.map(op => {
                   return <el-option key={op.value} label={op.label} value={op.value}></el-option>;
