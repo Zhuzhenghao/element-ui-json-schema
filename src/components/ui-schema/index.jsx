@@ -242,6 +242,7 @@ export default {
 
       switch (param.uiType) {
         case 'Switch': {
+          this.changeVal(this.formModel[param.jsonKey], param.jsonKey);
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
@@ -285,6 +286,7 @@ export default {
           );
         }
         case 'Select': {
+          this.changeVal(this.formModel[param.jsonKey], param.jsonKey);
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
