@@ -21,7 +21,6 @@ export default {
 
   watch: {
     items: {
-      immediate: true,
       handler(value) {
         this.$emit('valChange', {
           key: this.jsonKey,

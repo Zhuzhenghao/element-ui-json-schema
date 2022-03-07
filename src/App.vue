@@ -5,7 +5,6 @@
       ref="uiSchema"
       :ui-schema="schema.uiSchema"
       v-model="data"
-      :form.sync="formData"
     ></ui-schema>
 
     <el-button
@@ -27,7 +26,6 @@ export default {
     return {
       schema,
       data: {},
-      formData: {},
     };
   },
   methods: {

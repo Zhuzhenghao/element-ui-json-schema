@@ -258,6 +258,7 @@ export default {
           );
         }
         case 'Input': {
+          this.changeVal(this.formModel[param.jsonKey], param.jsonKey);
           return (
             <el-form-item {...itemProps}>
               <template slot="label">
@@ -503,13 +504,7 @@ export default {
     formModel: {
       deep: true,
       handler() {
-        this.$emit('input', this.formModel);
-      },
-    },
-    formData: {
-      deep: true,
-      handler() {
-        this.$emit('update:form', this.formData);
+        this.$emit('input', this.formData);
       },
     },
   },

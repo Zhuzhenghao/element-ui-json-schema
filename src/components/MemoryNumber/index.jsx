@@ -9,7 +9,7 @@ export default {
       get() {
         let initValue = '';
         if (this.value) {
-          initValue = parseInt(this.value.replace('Mi', ''), 10);
+          initValue = this.value.replace('Mi', '');
         }
         return initValue;
       },
@@ -21,7 +21,6 @@ export default {
 
   watch: {
     formModel: {
-      immediate: true,
       handler(value) {
         this.$emit('valChange', { key: this.jsonKey, value: value ? `${value}Mi` : null });
       },

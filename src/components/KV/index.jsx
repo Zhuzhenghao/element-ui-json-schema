@@ -27,14 +27,13 @@ export default {
   watch: {
     items: {
       deep: true,
-      immediate: true,
       handler(values) {
         const obj = Object.create(null);
         values.forEach(item => {
           obj[item.label] = item.value;
         });
         this.$emit('input', obj);
-        this.$emit('onChange', obj);
+        this.$emit('onChange', obj); // HelmValues 组件使用
         this.$emit('valChange', { key: this.jsonKey, value: obj });
       },
     },
