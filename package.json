@@ -9,11 +9,14 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
+    "codemirror": "^5.47.0",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
     "eslint-plugin-vuejs-accessibility": "^1.1.1",
+    "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-codemirror": "^4.0.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

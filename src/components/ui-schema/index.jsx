@@ -10,6 +10,7 @@ import SecretKeySelect from '../SecretKeySelect/index.jsx';
 import SecretSelect from '../SecretSelect/index.jsx';
 import MemoryNumber from '../MemoryNumber/index.jsx';
 import CPUNumber from '../CPUNumber/index.jsx';
+import K8sObjectsCode from '../K8sObjectsCode/index.jsx';
 import './index.scss';
 import { checkImageName } from '../../core/constant/index.js';
 
@@ -63,7 +64,8 @@ function init(uiSchema) {
     const defaultVal = param.validate?.defaultValue;
     switch (param.uiType) {
       case 'Strings':
-      case 'Structs': {
+      case 'Structs':
+      case 'K8sObjectsCode': {
         formModel[param.jsonKey] = defaultVal || [];
         break;
       }
@@ -135,6 +137,7 @@ export default {
     SecretSelect,
     MemoryNumber,
     CPUNumber,
+    K8sObjectsCode,
   },
 
   data() {
@@ -478,6 +481,21 @@ export default {
             );
           }
           return <div />;
+        case 'K8sObjectsCode':
+          return (
+            <el-form-item {...itemProps}>
+              <template slot="label">
+                <info-tips desc={param.description} label={param.label}></info-tips>
+              </template>
+              <k8s-objects-code
+                disabled={this.disabled}
+                v-model={this.formModel[param.jsonKey]}
+                id={param.jsonKey}
+                jsonKey={param.jsonKey}
+                v-on:valChange={this.handleChange}
+              ></k8s-objects-code>
+            </el-form-item>
+          );
         default:
           return <div />;
       }

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    {{formData}}
+    {{data}}
     <ui-schema
       ref="uiSchema"
       :ui-schema="schema.uiSchema"
